@@ -46,7 +46,7 @@ class HX711():
 
         print(self.DATA, self.CLOCK, self.CHANNEL, self.GAIN)    
 
-        GPIO.setup(self.DATA, GPIO.IN)
+        GPIO.setup(self.DATA, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.setup(self.CLOCK, GPIO.OUT, initial=GPIO.LOW)
         self._reset_state()
         self._setup_events()
@@ -127,12 +127,11 @@ class HX711():
                     #time.sleep(0.00001)
                     for i in range(24):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
-                        bitval = GPIO.input(self.DATA)
                         #time.sleep(0.00001)
                         GPIO.output(self.CLOCK, GPIO.LOW)
                         #time.sleep(0.00001)
-                        bitval_1 = GPIO.input(self.DATA)
-                        print("bitvals: {}, {}".format(bitval, bitval_1))
+                        bitval = GPIO.input(self.DATA)
+                        print("bitval: {}".format(bitval))
                         self.raw_value = (self.raw_value << 1) + bitval
                         #time.sleep(0.00001)
                     #self.data_ready = False    
