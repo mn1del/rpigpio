@@ -78,7 +78,7 @@ class HX711():
                 | ((self.CHANNEL=="A") & ((self.GAIN==64) | (self.GAIN==128)))
         if self.CHANNEL == "B":        
             self.EXTRA_PULSES = 2
-        elif self.GaIN == 64:
+        elif self.GAIN == 64:
             self.EXTRA_PULSES = 3
         else:
             self.EXTRA_PULSES = 1
