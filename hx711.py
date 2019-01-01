@@ -156,9 +156,9 @@ class HX711():
 if __name__ == "__main__":
     try:
         hx = HX711(printout=True)
-        #hx.start_monitoring()
-        while True:
-            pass
+        hx.start_monitoring()
+        #while True:
+        #    pass
     except KeyboardInterrupt:
         pass
     finally:
