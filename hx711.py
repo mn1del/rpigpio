@@ -106,7 +106,7 @@ class HX711():
                     if printout:    
                         print("raw_value: {}".format(self.raw_value))    
                     # Communicate the selected channel and gain settings
-                    for i in self.EXTRA_PULSES:
+                    for i in range(self.EXTRA_PULSES):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
                         time.sleep(0.000001)
                         GPIO.output(self.CLOCK, GPIO.LOW)
