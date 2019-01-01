@@ -96,16 +96,16 @@ class HX711():
         print("Reading...")
         # start the data reading process, using the CLOCK pin
         self.data_ready = True
-        time.sleep(0.00001)
+        #time.sleep(0.00001)
         for i in range(24):
             GPIO.output(self.CLOCK, GPIO.HIGH)
             #time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
-            time.sleep(0.00002)
+            #time.sleep(0.00002)
             bitval = GPIO.input(self.DATA)
             print(bitval)
             self.raw_value = (self.raw_value << 1) + bitval
-            time.sleep(0.00002)
+            #time.sleep(0.00002)
         self.data_ready = False    
         if self.raw_value & 0x800000:  # unsigned to signed
             self.raw_value |= ~0xffffff
@@ -155,10 +155,9 @@ class HX711():
 
 if __name__ == "__main__":
     try:
-        hx = HX711(printout=True)
+        hx = HX711(printout=False)
         #hx.start_monitoring()
         while True:
-            time.sleep(0.001)
             pass
     except KeyboardInterrupt:
         pass
