@@ -131,7 +131,7 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.LOW)
                         #time.sleep(0.00001)
                         bitval = GPIO.input(self.DATA)
-                        print("bitval: {}".format(bitval))
+                        #print("bitval: {}".format(bitval))
                         self.raw_value = (self.raw_value << 1) + bitval
                         #time.sleep(0.00001)
                     #self.data_ready = False    
