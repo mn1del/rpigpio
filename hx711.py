@@ -146,12 +146,12 @@ class HX711():
 #                        GPIO.output(self.CLOCK, GPIO.HIGH)
 #                        time.sleep(0.000001)
 #                        GPIO.output(self.CLOCK, GPIO.LOW)
-
-        except KeyboardInterrupt:
-            pass
-
-        finally:
-            GPIO.cleanup()
+#
+#        except KeyboardInterrupt:
+#            pass
+#
+#        finally:
+#            GPIO.cleanup()
 
 if __name__ == "__main__":
     try:
@@ -159,6 +159,7 @@ if __name__ == "__main__":
         #hx.start_monitoring()
         while True:
             time.sleep(0.001)
+            pass
     except KeyboardInterrupt:
         pass
     finally:
