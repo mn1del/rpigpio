@@ -116,14 +116,14 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.HIGH)
                         GPIO.output(self.CLOCK, GPIO.LOW)
                     self._reset_state()
-            avg = sum(vals) / len(vals)    
+            avg = sum(vals) / len(n_obs)    
             if self.PRINTOUT:    
                 print("Avg over {} observation(s): {}".format(n_obs, avg))
 
 if __name__ == "__main__":
     try:
         hx = HX711(printout=True)
-        hx.start_monitoring()
+        hx.start_monitoring(n_obs=3)
     except KeyboardInterrupt:
         GPIO.cleanup()
     finally:
