@@ -89,39 +89,38 @@ class HX711():
             self.EXTRA_PULSES = 1
         print("Pulses: {}".format(self.EXTRA_PULSES))
 
-    def get_reading(self, channel):    
-        """
-        This is the callback function which bitbangs the data in
-        """
-        print("Reading...")
-        # start the data reading process, using the CLOCK pin
-        self.data_ready = True
-        #time.sleep(0.00001)
-        for i in range(24):
-            GPIO.output(self.CLOCK, GPIO.HIGH)
-            #time.sleep(0.00002)
-            GPIO.output(self.CLOCK, GPIO.LOW)
-            #time.sleep(0.00002)
-            bitval = GPIO.input(self.DATA)
-            #print(bitval)
-            self.raw_value = (self.raw_value << 1) + bitval
-            #time.sleep(0.00002)
-        self.data_ready = False    
-        if self.raw_value & 0x800000:  # unsigned to signed
-            self.raw_value |= ~0xffffff
-        if self.PRINTOUT:    
-            print("raw_value: {}".format(self.raw_value))    
-        # Communicate the selected channel and gain settings
-        for i in range(self.EXTRA_PULSES):
-            GPIO.output(self.CLOCK, GPIO.HIGH)
-            #time.sleep(0.00002)
-            GPIO.output(self.CLOCK, GPIO.LOW)
+#    def get_reading(self, channel):    
+#        """
+#        This is the callback function which bitbangs the data in
+#        """
+#        print("Reading...")
+#        # start the data reading process, using the CLOCK pin
+#        self.data_ready = True
+#        #time.sleep(0.00001)
+#        for i in range(24):
+#            GPIO.output(self.CLOCK, GPIO.HIGH)
+#            #time.sleep(0.00002)
+#            GPIO.output(self.CLOCK, GPIO.LOW)
+#            #time.sleep(0.00002)
+#            bitval = GPIO.input(self.DATA)
+#            #print(bitval)
+#            self.raw_value = (self.raw_value << 1) + bitval
+#            #time.sleep(0.00002)
+#        self.data_ready = False    
+#        if self.raw_value & 0x800000:  # unsigned to signed
+#            self.raw_value |= ~0xffffff
+#        if self.PRINTOUT:    
+#            print("raw_value: {}".format(self.raw_value))    
+#        # Communicate the selected channel and gain settings
+#        for i in range(self.EXTRA_PULSES):
+#            GPIO.output(self.CLOCK, GPIO.HIGH)
+#            #time.sleep(0.00002)
+#            GPIO.output(self.CLOCK, GPIO.LOW)
 
     def start_monitoring(self, printout=True):
         try:
             while True:
                 #time.sleep(0.001)
-                self._reset_state()
                 if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
                     print("Reading...")
                     # start the data reading process, using the CLOCK pin
@@ -136,11 +135,12 @@ class HX711():
                         #print(bitval)
                         self.raw_value = (self.raw_value << 1) + bitval
                         #time.sleep(0.00001)
-                    self.data_ready = False    
+                    #self.data_ready = False    
                     if self.raw_value & 0x800000:  # unsigned to signed
                         self.raw_value |= ~0xffffff
                     if printout:    
                         print("raw_value: {}".format(self.raw_value))    
+                    self._reset_state()
                     # Communicate the selected channel and gain settings
                     for i in range(self.EXTRA_PULSES):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
