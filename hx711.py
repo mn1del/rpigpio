@@ -99,7 +99,7 @@ class HX711():
         time.sleep(0.00001)
         for i in range(24):
             GPIO.output(self.CLOCK, GPIO.HIGH)
-            time.sleep(0.00002)
+            #time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
             time.sleep(0.00002)
             bitval = GPIO.input(self.DATA)
