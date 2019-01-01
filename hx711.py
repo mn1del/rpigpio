@@ -64,7 +64,7 @@ class HX711():
             1) When DATA goes low outside of a reading loop
             2) When CLOCK goes low inside a reading loop
         """
-        GPIO.add_event_detect(self.DATA, GPIO.FALLING)
+        #GPIO.add_event_detect(self.DATA, GPIO.FALLING)
         #GPIO.add_event_callback(self.DATA, self.get_reading)
     
     def setup_channel_gain(self, channel=None, gain=None):
@@ -121,7 +121,7 @@ class HX711():
         try:
             while True:
                 time.sleep(0.001)
-                if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
+                if (not self.data_ready) & GPIO.input(self.DATA)==0#(GPIO.event_detected(self.DATA)):
                     # start the data reading process, using the CLOCK pin
                     self.data_ready = True
                     #time.sleep(0.00001)
