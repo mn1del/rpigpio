@@ -116,7 +116,7 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.HIGH)
                         GPIO.output(self.CLOCK, GPIO.LOW)
                     self._reset_state()
-            avg = sum(vals) / len(n_obs)    
+            avg = sum(vals) / n_obs
             if self.PRINTOUT:    
                 print("Avg over {} observation(s): {}".format(n_obs, avg))
 
