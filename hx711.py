@@ -137,7 +137,7 @@ class HX711():
                     #self.data_ready = False    
                     if self.raw_value & 0x800000:  # unsigned to signed
                         self.raw_value |= ~0xffffff
-                    if self.printout:    
+                    if self.PRINTOUT:    
                         print("raw_value: {}".format(self.raw_value))    
                     # Communicate the selected channel and gain settings
                     d_0 = GPIO.input(self.DATA)
