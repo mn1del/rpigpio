@@ -97,12 +97,13 @@ class HX711():
                     time.sleep(0.000001)
                     for i in range(24):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
-                        time.sleep(0.000001)
+                        time.sleep(0.000005)
                         GPIO.output(self.CLOCK, GPIO.LOW)
-                        time.sleep(0.000001)
+                        time.sleep(0.000005)
                         bitval = GPIO.input(self.DATA)
                         print(bitval)
                         self.raw_value = (self.raw_value << 1) + bitval
+                        time.sleep(0.000005)
                     self.data_ready = False    
                     if self.raw_value & 0x800000:  # unsigned to signed
                         self.raw_value |= ~0xffffff
