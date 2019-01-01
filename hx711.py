@@ -90,6 +90,7 @@ class HX711():
             while True:
                 self._reset_state()
                 if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
+                    print("Reading...")
                     # start the data reading process, using the CLOCK pin
                     self.data_ready = True
                     time.sleep(0.000001)
@@ -99,6 +100,7 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.LOW)
                         time.sleep(0.000001)
                         bitval = GPIO.input(self.DATA)
+                        print(bitval)
                         self.raw_value = (self.raw_value << 1) + bitval
                     self.data_ready = False    
                     if self.raw_value & 0x800000:  # unsigned to signed
