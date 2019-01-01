@@ -35,7 +35,7 @@ class HX711():
         """
         Defines the pins
         """
-        GPIO.cleanup()
+        #GPIO.cleanup()
 
         if data is not None:
             self.DATA = data
