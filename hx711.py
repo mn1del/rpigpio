@@ -65,7 +65,7 @@ class HX711():
             2) When CLOCK goes low inside a reading loop
         """
         GPIO.add_event_detect(self.DATA, GPIO.FALLING)
-        GPIO.add_event_callback(self.DATA, self.get_reading)
+        #GPIO.add_event_callback(self.DATA, self.get_reading)
     
     def setup_channel_gain(self, channel=None, gain=None):
         """
@@ -117,41 +117,41 @@ class HX711():
             #time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
 
-#    def start_monitoring(self, printout=True):
-#        try:
-#            while True:
-#                time.sleep(0.001)
-#                self._reset_state()
-#                if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
-#                    print("Reading...")
-#                    # start the data reading process, using the CLOCK pin
-#                    self.data_ready = True
-#                    time.sleep(0.00001)
-#                    for i in range(24):
-#                        GPIO.output(self.CLOCK, GPIO.HIGH)
-#                        time.sleep(0.00001)
-#                        GPIO.output(self.CLOCK, GPIO.LOW)
-#                        time.sleep(0.00001)
-#                        bitval = GPIO.input(self.DATA)
-#                        print(bitval)
-#                        self.raw_value = (self.raw_value << 1) + bitval
-#                        time.sleep(0.00001)
-#                    self.data_ready = False    
-#                    if self.raw_value & 0x800000:  # unsigned to signed
-#                        self.raw_value |= ~0xffffff
-#                    if printout:    
-#                        print("raw_value: {}".format(self.raw_value))    
-#                    # Communicate the selected channel and gain settings
-#                    for i in range(self.EXTRA_PULSES):
-#                        GPIO.output(self.CLOCK, GPIO.HIGH)
-#                        time.sleep(0.000001)
-#                        GPIO.output(self.CLOCK, GPIO.LOW)
-#
-#        except KeyboardInterrupt:
-#            pass
-#
-#        finally:
-#            GPIO.cleanup()
+    def start_monitoring(self, printout=True):
+        try:
+            while True:
+                #time.sleep(0.001)
+                self._reset_state()
+                if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
+                    print("Reading...")
+                    # start the data reading process, using the CLOCK pin
+                    self.data_ready = True
+                    #time.sleep(0.00001)
+                    for i in range(24):
+                        GPIO.output(self.CLOCK, GPIO.HIGH)
+                        #time.sleep(0.00001)
+                        GPIO.output(self.CLOCK, GPIO.LOW)
+                        #time.sleep(0.00001)
+                        bitval = GPIO.input(self.DATA)
+                        #print(bitval)
+                        self.raw_value = (self.raw_value << 1) + bitval
+                        #time.sleep(0.00001)
+                    self.data_ready = False    
+                    if self.raw_value & 0x800000:  # unsigned to signed
+                        self.raw_value |= ~0xffffff
+                    if printout:    
+                        print("raw_value: {}".format(self.raw_value))    
+                    # Communicate the selected channel and gain settings
+                    for i in range(self.EXTRA_PULSES):
+                        GPIO.output(self.CLOCK, GPIO.HIGH)
+                        #time.sleep(0.000001)
+                        GPIO.output(self.CLOCK, GPIO.LOW)
+
+        except KeyboardInterrupt:
+            pass
+
+        finally:
+            GPIO.cleanup()
 
 if __name__ == "__main__":
     try:
