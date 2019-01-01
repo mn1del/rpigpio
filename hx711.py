@@ -122,7 +122,6 @@ class HX711():
             while True:
                 #time.sleep(0.001)
                 if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
-                    print("Reading...")
                     # start the data reading process, using the CLOCK pin
                     self.data_ready = True
                     #time.sleep(0.00001)
@@ -140,12 +139,15 @@ class HX711():
                         self.raw_value |= ~0xffffff
                     if printout:    
                         print("raw_value: {}".format(self.raw_value))    
-                    self._reset_state()
                     # Communicate the selected channel and gain settings
+                    d_0 = GPIO.input(self.DATA)
                     for i in range(self.EXTRA_PULSES):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
                         #time.sleep(0.000001)
                         GPIO.output(self.CLOCK, GPIO.LOW)
+                    d_1  = GPIO.input(self.DATA)  
+                    self._reset_state()
+                    print("DATA states: {}, {}".format(d_0, d_1))
 
         except KeyboardInterrupt:
             pass
