@@ -121,7 +121,7 @@ class HX711():
         try:
             while True:
                 time.sleep(0.001)
-                if (not self.data_ready) & GPIO.input(self.DATA)==0#(GPIO.event_detected(self.DATA)):
+                if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
                     # start the data reading process, using the CLOCK pin
                     self.data_ready = True
                     #time.sleep(0.00001)
