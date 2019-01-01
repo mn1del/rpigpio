@@ -42,6 +42,8 @@ class HX711():
         if clock is not None:
             self.CLOCK = clock
 
+        print(self.DATA, self.CLOCK, self.CHANNEL, self.GAIN)    
+
         GPIO.setup(self.DATA, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         GPIO.setup(self.CLOCK, GPIO.OUT, initial=GPIO.LOW)
         self._reset_state()
