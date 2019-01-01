@@ -117,7 +117,7 @@ class HX711():
 #            #time.sleep(0.00002)
 #            GPIO.output(self.CLOCK, GPIO.LOW)
 
-    def start_monitoring(self, printout=True):
+    def start_monitoring(self):
         try:
             while True:
                 #time.sleep(0.001)
@@ -137,7 +137,7 @@ class HX711():
                     #self.data_ready = False    
                     if self.raw_value & 0x800000:  # unsigned to signed
                         self.raw_value |= ~0xffffff
-                    if printout:    
+                    if self.printout:    
                         print("raw_value: {}".format(self.raw_value))    
                     # Communicate the selected channel and gain settings
                     d_0 = GPIO.input(self.DATA)
@@ -147,7 +147,7 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.LOW)
                     d_1  = GPIO.input(self.DATA)  
                     self._reset_state()
-                    print("DATA states: {}, {}".format(d_0, d_1))
+                    print("DATA states: {}, {}, {}".format(bitval, d_0, d_1))
 
         except KeyboardInterrupt:
             pass
