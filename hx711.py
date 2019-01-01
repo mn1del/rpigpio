@@ -84,7 +84,7 @@ class HX711():
             self.EXTRA_PULSES = 3
         else:
             self.EXTRA_PULSES = 1
-        print(self.EXTRA_PULSES)    
+        print("Pulses: {}".formatself.EXTRA_PULSES))
 
     def start_monitoring(self, printout=True):
         try:
