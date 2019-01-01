@@ -119,4 +119,4 @@ class HX711():
 
 if __name__ == "__main__":
     hx = HX711()
-    hx.start_monitoring
+    hx.start_monitoring()
