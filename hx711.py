@@ -88,7 +88,7 @@ class HX711():
     def start_monitoring(self, printout=True):
         try:
             while True:
-                self.reset_state()
+                self._reset_state()
                 if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
                     # start the data reading process, using the CLOCK pin
                     self.data_ready = True
