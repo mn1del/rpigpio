@@ -99,13 +99,13 @@ class HX711():
         time.sleep(0.00001)
         for i in range(24):
             GPIO.output(self.CLOCK, GPIO.HIGH)
-            time.sleep(0.00001)
+            time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
-            time.sleep(0.00001)
+            time.sleep(0.00002)
             bitval = GPIO.input(self.DATA)
             print(bitval)
             self.raw_value = (self.raw_value << 1) + bitval
-            time.sleep(0.00001)
+            time.sleep(0.00002)
         self.data_ready = False    
         if self.raw_value & 0x800000:  # unsigned to signed
             self.raw_value |= ~0xffffff
@@ -114,7 +114,7 @@ class HX711():
         # Communicate the selected channel and gain settings
         for i in range(self.EXTRA_PULSES):
             GPIO.output(self.CLOCK, GPIO.HIGH)
-            time.sleep(0.000001)
+            time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
 
 #    def start_monitoring(self, printout=True):
