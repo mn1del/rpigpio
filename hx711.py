@@ -103,7 +103,7 @@ class HX711():
             GPIO.output(self.CLOCK, GPIO.LOW)
             #time.sleep(0.00002)
             bitval = GPIO.input(self.DATA)
-            print(bitval)
+            #print(bitval)
             self.raw_value = (self.raw_value << 1) + bitval
             #time.sleep(0.00002)
         self.data_ready = False    
@@ -155,7 +155,7 @@ class HX711():
 
 if __name__ == "__main__":
     try:
-        hx = HX711(printout=False)
+        hx = HX711(printout=True)
         #hx.start_monitoring()
         while True:
             pass
