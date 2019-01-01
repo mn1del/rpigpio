@@ -6,7 +6,7 @@ import time
 
 
 class HX711():
-    def __init__(self, data=22, clock=17, channel="A", gain=128):
+    def __init__(self, data=22, clock=17, channel="A", gain=128, printout=True):
         """
         Bit bangs data from HX711 using RPi.GPIO library.
         The general logic for the HX711 is:
@@ -22,12 +22,14 @@ class HX711():
             CLOCK: (int) BCM pin# for CLOCK
             channel: (str) A (must be 64 or 128 gain) or B (32 gain)
             gain: see channel comments
+            printout: whether to print results
         """
         GPIO.setmode(GPIO.BCM)
         self.DATA = data
         self.CLOCK = clock
         self.CHANNEL = channel
         self.GAIN = gain
+        self.PRINTOUT = printout
         self.setup_pins()
         self.setup_channel_gain()
 
@@ -63,6 +65,7 @@ class HX711():
             2) When CLOCK goes low inside a reading loop
         """
         GPIO.add_event_detect(self.DATA, GPIO.FALLING)
+        GPIO.add_event_callback(self.DATA, self.get_reading)
     
     def setup_channel_gain(self, channel=None, gain=None):
         """
@@ -85,6 +88,34 @@ class HX711():
         else:
             self.EXTRA_PULSES = 1
         print("Pulses: {}".format(self.EXTRA_PULSES))
+
+    def get_reading(self, channel):    
+        """
+        This is the callback function which bitbangs the data in
+        """
+        print("Reading...")
+        # start the data reading process, using the CLOCK pin
+        self.data_ready = True
+        time.sleep(0.00001)
+        for i in range(24):
+            GPIO.output(self.CLOCK, GPIO.HIGH)
+            time.sleep(0.00001)
+            GPIO.output(self.CLOCK, GPIO.LOW)
+            time.sleep(0.00001)
+            bitval = GPIO.input(self.DATA)
+            print(bitval)
+            self.raw_value = (self.raw_value << 1) + bitval
+            time.sleep(0.00001)
+        self.data_ready = False    
+        if self.raw_value & 0x800000:  # unsigned to signed
+            self.raw_value |= ~0xffffff
+        if self.PRINTOUT:    
+            print("raw_value: {}".format(self.raw_value))    
+        # Communicate the selected channel and gain settings
+        for i in range(self.EXTRA_PULSES):
+            GPIO.output(self.CLOCK, GPIO.HIGH)
+            time.sleep(0.000001)
+            GPIO.output(self.CLOCK, GPIO.LOW)
 
     def start_monitoring(self, printout=True):
         try:
@@ -123,5 +154,10 @@ class HX711():
             GPIO.cleanup()
 
 if __name__ == "__main__":
-    hx = HX711()
-    hx.start_monitoring()
+    try:
+        hx = HX711(printout=True)
+        #hx.start_monitoring()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        GPIO.cleanup()
