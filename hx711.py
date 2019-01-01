@@ -157,6 +157,8 @@ if __name__ == "__main__":
     try:
         hx = HX711(printout=True)
         #hx.start_monitoring()
+        while True:
+            time.sleep(0.001)
     except KeyboardInterrupt:
         pass
     finally:
