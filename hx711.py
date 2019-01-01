@@ -114,7 +114,7 @@ class HX711():
         # Communicate the selected channel and gain settings
         for i in range(self.EXTRA_PULSES):
             GPIO.output(self.CLOCK, GPIO.HIGH)
-            time.sleep(0.00002)
+            #time.sleep(0.00002)
             GPIO.output(self.CLOCK, GPIO.LOW)
 
 #    def start_monitoring(self, printout=True):
