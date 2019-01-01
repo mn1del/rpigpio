@@ -89,6 +89,7 @@ class HX711():
     def start_monitoring(self, printout=True):
         try:
             while True:
+                time.sleep(0.001)
                 self._reset_state()
                 if (not self.data_ready) & (GPIO.event_detected(self.DATA)):
                     print("Reading...")
