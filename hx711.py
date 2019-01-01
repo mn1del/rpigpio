@@ -61,7 +61,6 @@ class HX711():
             2) When CLOCK goes low inside a reading loop
         """
         GPIO.add_event_detect(self.DATA, GPIO.FALLING)
-        GPIO.add_event_detect(self.CLOCK, GPIO.FALLING)
     
     def setup_channel_gain(self, channel=None, gain=None):
         """
