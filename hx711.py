@@ -44,7 +44,7 @@ class HX711():
 
         print(self.DATA, self.CLOCK, self.CHANNEL, self.GAIN)    
 
-        GPIO.setup(self.DATA, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+        GPIO.setup(self.DATA, GPIO.IN)
         GPIO.setup(self.CLOCK, GPIO.OUT, initial=GPIO.LOW)
         self._reset_state()
         self._setup_events()
