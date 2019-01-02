@@ -161,8 +161,8 @@ class LCD1602():
 if __name__ == '__main__':
     try:
         lcd = LCD1602()
-        lcd.lcd_string("Hello Line 1!!", lcd.LCD_LINE1)
-        lcd.lcd_string("...and Line 2!!!", lcd.LCD_LINE2)
+        lcd.lcd_string("Hello Line 1!!", lcd.LCD_LINE_1)
+        lcd.lcd_string("...and Line 2!!!", lcd.LCD_LINE_2)
     except KeyboardInterrupt:
         GPIO.cleanup()
     finally:
