@@ -163,6 +163,7 @@ if __name__ == '__main__':
         lcd = LCD1602()
         lcd.lcd_string("Hello Line 1!!", lcd.LCD_LINE_1)
         lcd.lcd_string("...and Line 2!!!", lcd.LCD_LINE_2)
+        time.sleep(5)
     except KeyboardInterrupt:
         GPIO.cleanup()
     finally:
