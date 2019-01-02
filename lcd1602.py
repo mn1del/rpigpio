@@ -159,7 +159,7 @@ class LCD1602():
             
 if __name__ == '__main__':
     try:
-        lcd = LCD1602(data_pins=[5,6,13,26], rs_pin=12, e_pin=16)
+        lcd = LCD1602()
         lcd.lcd_string("Hello Line 1!!", lcd.LCD_LINE1)
         lcd.lcd_string("...and Line 2!!!", lcd.LCD_LINE2)
     except KeyboardInterrupt:
