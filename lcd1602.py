@@ -65,7 +65,8 @@ class LCD1602():
         self.E_DELAY = 0.0005
       
         GPIO.setmode(GPIO.BCM)       # Use BCM GPIO numbers
-        GPIO.setup(self.PINS, GPIO.OUT)
+        for pin in self.PINS:
+            GPIO.setup(pin, GPIO.OUT)
         
         # Initialise display
         self.lcd_init()
