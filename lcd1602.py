@@ -41,7 +41,7 @@ class LCD1602():
             rs_pin: int. GPIO pin (BCM) for LCD pin 4 (Register Select)
             e_pin: int. GPIO pin (BCM) for LCD pin 6(Enable)
         """
-        assert len(data_pins) == 3
+        assert len(data_pins) == 4
         
         # Define GPIO to LCD mapping
         self.LCD_RS = rs_pin
