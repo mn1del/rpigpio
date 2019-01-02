@@ -13,7 +13,7 @@ import RPi.GPIO as GPIO
 import time
 
 class LCD1602():
-    def __init__(self, data_pins=[5,6,13,26], rs_pin=12, e_pin=16):
+    def __init__(self, data_pins=[22,10,9,11], rs_pin=17, e_pin=27):
         """
         Class to handle communications with 16x02 LCD displays driven by 
         the Hitachi HD44780 Controller. Uses 4 bit communication
