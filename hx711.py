@@ -6,7 +6,7 @@ import time
 
 
 class HX711():
-    def __init__(self, data=2, clock=4, channel="A", gain=128, printout=True):
+    def __init__(self, data=2, clock=3, channel="A", gain=128, printout=True):
         """
         Bit bangs data from HX711 using RPi.GPIO library.
         The general logic for the HX711 is:
