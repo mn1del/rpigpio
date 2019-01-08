@@ -108,9 +108,9 @@ class HX711():
                         GPIO.output(self.CLOCK, GPIO.LOW)
                         bitval = GPIO.input(self.DATA)
                         self.raw_value = (self.raw_value << 1) + bitval
-                        vals.append(self.raw_value)
                     if self.raw_value & 0x800000:  # unsigned to signed
                         self.raw_value |= ~0xffffff
+                    vals.append(self.raw_value)
                     # Communicate the selected channel and gain settings
                     for i in range(self.EXTRA_PULSES):
                         GPIO.output(self.CLOCK, GPIO.HIGH)
