@@ -96,29 +96,30 @@ class HX711():
         args:
             n_obs: (int) number of observations to average over
         """
+        vals = []
         while True:
-            vals = []
-            for obs in range(n_obs):
-                time.sleep(0.001)
-                if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
-                    # start the data reading process, using the CLOCK pin
-                    self.data_ready = True
-                    for i in range(24):
-                        GPIO.output(self.CLOCK, GPIO.HIGH)
-                        GPIO.output(self.CLOCK, GPIO.LOW)
-                        bitval = GPIO.input(self.DATA)
-                        self.raw_value = (self.raw_value << 1) + bitval
-                    if self.raw_value & 0x800000:  # unsigned to signed
-                        self.raw_value |= ~0xffffff
-                    vals.append(self.raw_value)
-                    # Communicate the selected channel and gain settings
-                    for i in range(self.EXTRA_PULSES):
-                        GPIO.output(self.CLOCK, GPIO.HIGH)
-                        GPIO.output(self.CLOCK, GPIO.LOW)
-                    self._reset_state()
-            avg = sum(vals) / n_obs
-            if self.PRINTOUT:    
-                print("Avg over {} observation(s): {}".format(n_obs, avg))
+            if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
+                # start the data reading process, using the CLOCK pin
+                self.data_ready = True
+                for i in range(24):
+                    GPIO.output(self.CLOCK, GPIO.HIGH)
+                    GPIO.output(self.CLOCK, GPIO.LOW)
+                    bitval = GPIO.input(self.DATA)
+                    self.raw_value = (self.raw_value << 1) + bitval
+                if self.raw_value & 0x800000:  # unsigned to signed
+                    self.raw_value |= ~0xffffff
+                vals.append(self.raw_value)
+                # Communicate the selected channel and gain settings
+                for i in range(self.EXTRA_PULSES):
+                    GPIO.output(self.CLOCK, GPIO.HIGH)
+                    GPIO.output(self.CLOCK, GPIO.LOW)
+                self._reset_state()
+            if len(vals) == n_obs:        
+                avg = sum(vals) / n_obs
+                vals = []
+                if self.PRINTOUT:    
+                    print("Avg over {} observation(s): {}".format(n_obs, avg))
+            time.sleep(0.001)
 
 if __name__ == "__main__":
     try:
