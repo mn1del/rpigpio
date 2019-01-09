@@ -25,8 +25,8 @@ class RotaryEncoder(BaseIO):
         GPIO.setmode(GPIO.BCM)
         
         # define pin locations (BCM)
-        self.CLK = pin_a
-        self.DT = pin_b
+        self.CLK = clk
+        self.DT = dt
         self.BUTTON = button
         self.COUNTER = counter
         self.LONG_PRESS_SECS = long_press_secs
