@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-import GPIO
+import RPi.GPIO as GPIO
 
 
 def BaseIO():
