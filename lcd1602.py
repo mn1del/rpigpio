@@ -153,13 +153,20 @@ class LCD1602(BaseIO):
         # send characters
         for i in range(self.LCD_WIDTH):
             self.lcd_byte(ord(message[i]), self.LCD_CHR)
+
+    def clear_screen(self):
+        """
+        Sends an instruction for the HD44780 to clear the display
+        using its internal function for efficiency
+        """
+        self.lcd_byte(0x01, self.LCD_CMD)
             
     def cleanup(self):
         """
         Sends an instruction for the HD44780 to clear the display
         using its internal function for efficiency
         """
-        self.lcd_byte(0x01, self.LCD_CMD)
+        self.clear_screen()
         super().cleanup()
             
 if __name__ == '__main__':
