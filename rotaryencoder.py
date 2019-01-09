@@ -4,7 +4,13 @@
 Class to handle rotary encoder inputs
 """
 
-class RotaryEncoder():
+
+import RPi.GPIO as GPIO
+import time
+
+from base import BaseIO
+
+class RotaryEncoder(BaseIO):
     def __init__(self, clk=23, dt=24, button=25, counter=0, long_press_secs=1.0):
         """
         Class to handle rotary encoder inputs, and integral push button switch.

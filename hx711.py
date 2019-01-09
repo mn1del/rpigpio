@@ -4,8 +4,10 @@
 import RPi.GPIO as GPIO
 import time
 
+from base import BaseIO
 
-class HX711():
+
+class HX711(BaseIO):
     def __init__(self, data=2, clock=3, channel="A", gain=128, printout=True):
         """
         Bit bangs data from HX711 using RPi.GPIO library.
@@ -106,7 +108,6 @@ class HX711():
         if self.PRINTOUT:    
             print("Avg over {} observation(s): {}".format(n_obs, reading))
         return reading
-
 
     def start_monitoring(self, n_obs=1):
         """

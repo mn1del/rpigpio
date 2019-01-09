@@ -12,7 +12,9 @@ Based on code written by:
 import RPi.GPIO as GPIO
 import time
 
-class LCD1602():
+from base import BaseIO
+
+class LCD1602(BaseIO):
     def __init__(self, data_pins=[23,24,25,8], rs_pin=14, e_pin=15):
         """
         Class to handle communications with 16x02 LCD displays driven by 
@@ -151,12 +153,13 @@ class LCD1602():
         for i in range(self.LCD_WIDTH):
             self.lcd_byte(ord(message[i]), self.LCD_CHR)
             
-    def clear_display(self):
+    def cleanup(self):
         """
         Sends an instruction for the HD44780 to clear the display
         using its internal function for efficiency
         """
         self.lcd_byte(0x01, self.LCD_CMD)
+        super().cleanup()
             
 if __name__ == '__main__':
     try:

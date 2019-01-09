@@ -1,8 +1,12 @@
+#!/usr/bin/env python3
+
+
 import RPi.GPIO as GPIO
 import time
 
+from base import BaseIO
 
-class Display4s7s():
+class Display4s7s(BaseIO):
     def __init__(
             self,
             segment_pins=(2, 3, 4, 17, 27, 22, 10, 9),
