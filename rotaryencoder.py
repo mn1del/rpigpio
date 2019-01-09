@@ -99,6 +99,7 @@ if __name__ == "__main__":
         button = rot.BUTTON_LAST_PRESS
         print("{}, {}".format(counter, button))
         while True:
+            rot.check_step()
             if (rot.COUNTER != counter):
                 counter = rot.COUNTER
                 print("COUNTER: {}".format(counter))
