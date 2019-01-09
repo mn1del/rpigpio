@@ -37,8 +37,6 @@ class HX711():
         """
         Defines the pins
         """
-        #GPIO.cleanup()
-
         if data is not None:
             self.DATA = data
         if clock is not None:
@@ -49,7 +47,6 @@ class HX711():
         GPIO.setup(self.DATA, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.setup(self.CLOCK, GPIO.OUT, initial=GPIO.LOW)
         self._reset_state()
-        self._setup_events()
 
     def _reset_state(self):
         """
@@ -58,15 +55,6 @@ class HX711():
         self.data_ready = False
         self.raw_value = 0
 
-    def _setup_events(self):
-        """
-        Setup two event triggers:
-            1) When DATA goes low outside of a reading loop
-            2) When CLOCK goes low inside a reading loop
-        """
-        #GPIO.add_event_detect(self.DATA, GPIO.FALLING)
-        #GPIO.add_event_callback(self.DATA, self.get_reading)
-    
     def setup_channel_gain(self, channel=None, gain=None):
         """
         Create new variable determining number of additional CLOCK pulses,
@@ -130,34 +118,12 @@ class HX711():
         vals = []
         while True:
             self.get_reading(n_obs)
-#            if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
-#                # start the data reading process, using the CLOCK pin
-#                self.data_ready = True
-#                for i in range(24):
-#                    GPIO.output(self.CLOCK, GPIO.HIGH)
-#                    GPIO.output(self.CLOCK, GPIO.LOW)
-#                    bitval = GPIO.input(self.DATA)
-#                    self.raw_value = (self.raw_value << 1) + bitval
-#                if self.raw_value & 0x800000:  # unsigned to signed
-#                    self.raw_value |= ~0xffffff
-#                vals.append(self.raw_value)
-#                # Communicate the selected channel and gain settings
-#                for i in range(self.EXTRA_PULSES):
-#                    GPIO.output(self.CLOCK, GPIO.HIGH)
-#                    GPIO.output(self.CLOCK, GPIO.LOW)
-#                self._reset_state()
-#            if len(vals) == n_obs:        
-#                self.AVG_READING = sum(vals) / n_obs
-#                vals = []
-#                if self.PRINTOUT:    
-#                    print("Avg over {} observation(s): {}".format(n_obs, self.AVG_READING))
-#            time.sleep(0.001)
 
 if __name__ == "__main__":
     try:
         hx = HX711(printout=True)
         hx.start_monitoring(n_obs=3)
     except KeyboardInterrupt:
-        GPIO.cleanup()
+        pass
     finally:
         GPIO.cleanup()
