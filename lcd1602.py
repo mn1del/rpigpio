@@ -44,6 +44,7 @@ class LCD1602(BaseIO):
             e_pin: int. GPIO pin (BCM) for LCD pin 6(Enable)
         """
         assert len(data_pins) == 4
+        GPIO.setmode(GPIO.BCM)
         
         # Define GPIO to LCD mapping
         self.LCD_RS = rs_pin
