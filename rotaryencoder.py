@@ -79,15 +79,12 @@ class RotaryEncoder(BaseIO):
         and self.BUTTON_LONG_PRESS with a boolean.
         Leaves the interpretation of these to domain specific use cases
         """
-        print("Channel: {}".format(channel))
         time_0 = time.time()
         time_1 = time_0
         while (GPIO.input(channel) == 0) \
                 & ((time_1-time_0) < self.LONG_PRESS_SECS):
-            print("waiting...")
+            print("button held down...")
             time_1 = time.time()
-        #time_1 = time.time()
-        #pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=int(self.LONG_PRESS_SECS))
         self.BUTTON_LAST_PRESS = time_1
         if (time_1 - time_0) > self.LONG_PRESS_SECS:
             self.BUTTON_LONG_PRESS = True
@@ -113,5 +110,3 @@ if __name__ == "__main__":
         pass
     finally:
         GPIO.cleanup()
-
-        
