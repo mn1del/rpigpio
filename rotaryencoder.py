@@ -72,13 +72,14 @@ class RotaryEncoder(BaseIO):
         self.COUNTER += incr  
         return incr
     
-    def button_press(self):
+    def button_press(self, channel):
         """
         Callback for button click, and support for long_clicks.
         Populates self.BUTTON_LAST_PRESS with a timestamp,
         and self.BUTTON_LONG_PRESS with a boolean.
         Leaves the interpretation of these to domain specific use cases
         """
+        print("Channel: {}".format(channel))
         pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=self.LONG_PRESS_SECS)
         self.BUTTON_LAST_PRESS = time.time()
         if pin is None:
