@@ -11,7 +11,7 @@ import time
 from base import BaseIO
 
 class RotaryEncoder(BaseIO):
-    def __init__(self, clk=23, dt=24, button=25, counter=0, long_press_secs=1.0):
+    def __init__(self, clk=22, dt=27, button=17, counter=0, long_press_secs=1.0):
         """
         Class to handle rotary encoder inputs, and integral push button switch.
         
@@ -86,4 +86,7 @@ class RotaryEncoder(BaseIO):
         else:
             self.BUTTON_LONG_PRESS = False
                 
+
+if __name__ == "__main__":
+    rot = RotaryEncoder()
         
