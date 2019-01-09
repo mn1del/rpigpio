@@ -81,7 +81,7 @@ class RotaryEncoder(BaseIO):
         """
         print("Channel: {}".format(channel))
         time_0 = time.time()
-        while GPIO.input(channel) == 1:
+        while GPIO.input(channel) == 0:
             print("waiting...")
         time_1 = time.time()
         #pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=int(self.LONG_PRESS_SECS))
