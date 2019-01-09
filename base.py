@@ -4,7 +4,7 @@
 import RPi.GPIO as GPIO
 
 
-def BaseIO():
+class BaseIO():
     """
     Base class to be inherited by IO classes
     """
