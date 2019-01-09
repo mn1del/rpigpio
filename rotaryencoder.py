@@ -42,7 +42,7 @@ class RotaryEncoder(BaseIO):
             pull_up_down=GPIO.PUD_DOWN)
         
         # Add button callback
-        GPIO.add_event_detect(channel, GPIO.RISING, callback=self.button_press)
+        GPIO.add_event_detect(self.BUTTON, GPIO.RISING, callback=self.button_press)
         
         self.CLK_LAST_STATE = GPIO.input(self.CLK)
         self.DT_LAST_STATE = GPIO.input(self.DT)
