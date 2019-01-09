@@ -81,9 +81,12 @@ class RotaryEncoder(BaseIO):
         """
         print("Channel: {}".format(channel))
         time_0 = time.time()
-        while GPIO.input(channel) == 0:
+        time_1 = time_0
+        while (GPIO.input(channel) == 0) \
+                & (time_1-time_0) < self.LONG_PRESS_SECS:
             print("waiting...")
-        time_1 = time.time()
+            time_1 = time.time()
+        #time_1 = time.time()
         #pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=int(self.LONG_PRESS_SECS))
         self.BUTTON_LAST_PRESS = time_1
         if (time_1 - time_0) > self.LONG_PRESS_SECS:
