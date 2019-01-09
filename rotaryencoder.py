@@ -83,7 +83,7 @@ class RotaryEncoder(BaseIO):
         time_0 = time.time()
         time_1 = time_0
         while (GPIO.input(channel) == 0) \
-                & (time_1-time_0) < self.LONG_PRESS_SECS:
+                & ((time_1-time_0) < self.LONG_PRESS_SECS):
             print("waiting...")
             time_1 = time.time()
         #time_1 = time.time()
