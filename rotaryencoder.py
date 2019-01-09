@@ -61,11 +61,11 @@ class RotaryEncoder(BaseIO):
                 incr = 1
             else:
                 incr = -1
-        elif dt != self.DT_LAST_STATE:
-            if dt != clk:
-                incr = -1
-            else:
-                incr = 1
+#        elif dt != self.DT_LAST_STATE:
+#            if dt != clk:
+#                incr = -1
+#            else:
+#                incr = 1
         else:
             incr = 0
             
