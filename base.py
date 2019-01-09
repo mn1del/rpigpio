@@ -9,5 +9,5 @@ class BaseIO():
     Base class to be inherited by IO classes
     """
 
-    def cleanup():
+    def cleanup(self):
         GPIO.cleanup()
