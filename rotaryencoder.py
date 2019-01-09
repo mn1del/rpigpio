@@ -88,5 +88,21 @@ class RotaryEncoder(BaseIO):
                 
 
 if __name__ == "__main__":
-    rot = RotaryEncoder()
+    try:
+        rot = RotaryEncoder()
+        counter = rot.COUNTER
+        button = rot.BUTTON_LAST_PRESS
+        while True:
+            if (rot.COUNTER != counter):
+                counter = rot.COUNTER
+                print("COUNTER: {}".format(counter))
+            elif (rot.BUTTON_LAST_PRESS != button):
+                button = rot.BUTTON_LAST_PRESS
+                button_ls = rot.BUTTON_LONG_PRESS
+                print("Button (Long: {}): {}".format(button, bool(button_ls)))
+    except:
+        pass
+    finally:
+        GPIO.cleanup()
+
         
