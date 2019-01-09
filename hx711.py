@@ -89,15 +89,15 @@ class HX711():
             self.EXTRA_PULSES = 1
         print("Pulses: {}".format(self.EXTRA_PULSES))
 
-    def start_monitoring(self, n_obs=1):
+    def get_reading(self, n_obs=1):
         """
-        The main loop to take readings. Optionally averaged over multiple readings for stability
+        Return a single reading (or average of n_obs readings)
 
         args:
-            n_obs: (int) number of observations to average over
+            n_obs: (int) number of reading to average over)
         """
         vals = []
-        while True:
+        while len(vals) < n_obs:
             if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
                 # start the data reading process, using the CLOCK pin
                 self.data_ready = True
@@ -114,12 +114,44 @@ class HX711():
                     GPIO.output(self.CLOCK, GPIO.HIGH)
                     GPIO.output(self.CLOCK, GPIO.LOW)
                 self._reset_state()
-            if len(vals) == n_obs:        
-                self.AVG_READING = sum(vals) / n_obs
-                vals = []
-                if self.PRINTOUT:    
-                    print("Avg over {} observation(s): {}".format(n_obs, self.AVG_READING))
-            time.sleep(0.001)
+        reading = sum(vals) / n_obs
+        if self.PRINTOUT:    
+            print("Avg over {} observation(s): {}".format(n_obs, reading))
+        return reading
+
+
+    def start_monitoring(self, n_obs=1):
+        """
+        The main loop to take readings. Optionally averaged over multiple readings for stability
+
+        args:
+            n_obs: (int) number of observations to average over
+        """
+        vals = []
+        while True:
+            self.get_reading(n_obs)
+#            if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
+#                # start the data reading process, using the CLOCK pin
+#                self.data_ready = True
+#                for i in range(24):
+#                    GPIO.output(self.CLOCK, GPIO.HIGH)
+#                    GPIO.output(self.CLOCK, GPIO.LOW)
+#                    bitval = GPIO.input(self.DATA)
+#                    self.raw_value = (self.raw_value << 1) + bitval
+#                if self.raw_value & 0x800000:  # unsigned to signed
+#                    self.raw_value |= ~0xffffff
+#                vals.append(self.raw_value)
+#                # Communicate the selected channel and gain settings
+#                for i in range(self.EXTRA_PULSES):
+#                    GPIO.output(self.CLOCK, GPIO.HIGH)
+#                    GPIO.output(self.CLOCK, GPIO.LOW)
+#                self._reset_state()
+#            if len(vals) == n_obs:        
+#                self.AVG_READING = sum(vals) / n_obs
+#                vals = []
+#                if self.PRINTOUT:    
+#                    print("Avg over {} observation(s): {}".format(n_obs, self.AVG_READING))
+#            time.sleep(0.001)
 
 if __name__ == "__main__":
     try:
