@@ -80,9 +80,13 @@ class RotaryEncoder(BaseIO):
         Leaves the interpretation of these to domain specific use cases
         """
         print("Channel: {}".format(channel))
-        pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=int(self.LONG_PRESS_SECS))
-        self.BUTTON_LAST_PRESS = time.time()
-        if pin is None:
+        time_0 = time.time()
+        while GPIO.input(channel) == 1:
+            print("waiting...")
+        time_1 = time.time()
+        #pin = GPIO.wait_for_edge(self.BUTTON, GPIO.FALLING, timeout=int(self.LONG_PRESS_SECS))
+        self.BUTTON_LAST_PRESS = time_1
+        if (time_1 - time_0) > self.LONG_PRESS_SECS:
             self.BUTTON_LONG_PRESS = True
         else:
             self.BUTTON_LONG_PRESS = False
