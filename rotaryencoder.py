@@ -92,6 +92,7 @@ if __name__ == "__main__":
         rot = RotaryEncoder()
         counter = rot.COUNTER
         button = rot.BUTTON_LAST_PRESS
+        print("{}, {}".format(counter, button))
         while True:
             if (rot.COUNTER != counter):
                 counter = rot.COUNTER
