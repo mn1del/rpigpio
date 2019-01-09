@@ -100,7 +100,6 @@ if __name__ == "__main__":
         print("{}, {}".format(counter, button))
         while True:
             rot.check_step()
-            time.sleep(0.001)
             if (rot.COUNTER != counter):
                 counter = rot.COUNTER
                 print("COUNTER: {}".format(counter))
