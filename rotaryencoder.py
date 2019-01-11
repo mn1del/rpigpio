@@ -77,11 +77,11 @@ class RotaryEncoder(BaseIO):
                     direction = 1
                 else:
                     direction = -1
-            else:  # DT pin event
-                if dt == clk:
-                    direction = 1
-                else:
-                    direction = -1
+#            else:  # DT pin event
+#                if dt == clk:
+#                    direction = 1
+#                else:
+#                    direction = -1
             
         self.COUNTER += direction  
         return direction
