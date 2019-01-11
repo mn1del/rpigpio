@@ -53,7 +53,7 @@ class RotaryEncoder(BaseIO):
         # *** note: for some reason most tutorials only add callbacks to one pin. No idea why.
         GPIO.add_event_detect(self.CLK, GPIO.RISING, callback=self.decode_step)
         #GPIO.add_event_detect(self.CLK, GPIO.BOTH, callback=self.decode_step)
-        #GPIO.add_event_detect(self.DT, GPIO.BOTH, callback=self.decode_step)
+        GPIO.add_event_detect(self.DT, GPIO.RISING, callback=self.decode_step)
         
     def decode_step(self, channel):
         """
