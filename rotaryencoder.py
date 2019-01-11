@@ -52,7 +52,6 @@ class RotaryEncoder(BaseIO):
         # add callback to both the CLK and DT pins
         # *** note: for some reason most tutorials only add callbacks to one pin. No idea why.
         GPIO.add_event_detect(self.CLK, GPIO.RISING, callback=self.decode_step)
-        #GPIO.add_event_detect(self.CLK, GPIO.BOTH, callback=self.decode_step)
         GPIO.add_event_detect(self.DT, GPIO.RISING, callback=self.decode_step)
         
     def decode_step(self, channel):
@@ -108,13 +107,12 @@ class RotaryEncoder(BaseIO):
                 
 
 if __name__ == "__main__":
-    #try:
+    try:
         rot = RotaryEncoder()
         counter = rot.COUNTER
         button = rot.BUTTON_LAST_PRESS
         print("{}, {}".format(counter, button))
         while True:
-            #rot.decode_step()
             if (rot.COUNTER != counter):
                 counter = rot.COUNTER
                 print("COUNTER: {}".format(counter))
@@ -122,7 +120,7 @@ if __name__ == "__main__":
                 button = rot.BUTTON_LAST_PRESS
                 button_ls = rot.BUTTON_LONG_PRESS
                 print("Button (Long: {}): {}".format(button, bool(button_ls)))
-    #except:
-    #    pass
-    #finally:
-    #    GPIO.cleanup()
+    except:
+        pass
+    finally:
+        GPIO.cleanup()
