@@ -11,7 +11,7 @@ import time
 from base import BaseIO
 
 class RotaryEncoder(BaseIO):
-    def __init__(self, clk=22, dt=27, button=17, counter=0, long_press_secs=1.0):
+    def __init__(self, clk=22, dt=27, button=17, counter=0, long_press_secs=1.0, debounce_n=5):
         """
         Class to handle rotary encoder inputs, and integral push button switch.
         
@@ -21,6 +21,7 @@ class RotaryEncoder(BaseIO):
             button: (int) GPIO pin (BCM) for the encoder SW pin
             counter: (int) Keeps track of movements
             long_button_press: (float) Definition (in seconds) of a long button press
+            debounce_n: (int) number of identical readings before rotation pulse is accepted
         """
         GPIO.setmode(GPIO.BCM)
         
@@ -31,46 +32,59 @@ class RotaryEncoder(BaseIO):
         self.COUNTER = counter
         self.LONG_PRESS_SECS = long_press_secs
         
+        # setup pins
+        GPIO.setup(self.BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup([self.CLK, self.DT], GPIO.IN)
+
         # Define button state
         self.BUTTON_LONG_PRESS = 0
         self.BUTTON_LAST_PRESS = time.time()
         
-        # setup pins
-        GPIO.setup(
-            [self.CLK, self.DT, self.BUTTON], 
-            GPIO.IN, 
-            pull_up_down=GPIO.PUD_DOWN)
+        # Define rotation state/counter
+        self.DEBOUNCE_N = debounce_n
+        self.DEBOUNCE_COUNT = 0
+        self.LAST_CLK = GPIO.input(self.CLK)
+        self.LAST_DT = GPIO.input(self.DT)
         
         # Add button callback
         GPIO.add_event_detect(self.BUTTON, GPIO.FALLING, callback=self.button_press)
         
-        self.CLK_LAST_STATE = GPIO.input(self.CLK)
-        self.DT_LAST_STATE = GPIO.input(self.DT)
+        # add callback to both the CLK and DT pins
+        # *** note: for some reason most tutorials only add callbacks to one pin. No idea why.
+        GPIO.add_event_detect(self.CLK, GPIO.BOTH, callback=self.decode_step)
+        GPIO.add_event_detect(self.DT, GPIO.BOTH, callback=self.decode_step)
         
-    def check_step(self):
+    def decode_step(self, channel):
         """
-        return -1, 0, or +1 depending on last movement.
-        Also increment self.COUNTER
+        Catches self.CLK or self.DT pins rising
+        First conduct debouncing.
+        Then return -1, 0, or +1 depending on last movement.
+        Also increments self.COUNTER
         """
         clk = GPIO.input(self.CLK)
         dt = GPIO.input(self.DT)
         
-        # movement logic
-        if clk != self.CLK_LAST_STATE:
-            if dt != clk:
-                incr = 1
-            else:
-                incr = -1
-#        elif dt != self.DT_LAST_STATE:
-#            if dt != clk:
-#                incr = -1
-#            else:
-#                incr = 1
+        # The first few pulses are assumed to need debouncing
+        if self.DEBOUNCE_COUNT < self.DEBOUNCE_N:
+            direction = 0
+            self.DEBOUNCE_COUNT += 1
+            return None
         else:
-            incr = 0
+            self.DEBOUNCE_COUNT = 0
+            if channel = self.CLK:  # CLK pin event
+                # movement logic
+                if dt != clk:
+                    direction = 1
+                else:
+                    direction = -1
+            else:  # DT pin event
+                if dt == clk:
+                    direction = 1
+                else:
+                    direction = -1
             
-        self.COUNTER += incr  
-        return incr
+        self.COUNTER += direction  
+        return direction
     
     def button_press(self, channel):
         """
