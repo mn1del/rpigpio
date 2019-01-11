@@ -71,7 +71,7 @@ class RotaryEncoder(BaseIO):
             return None
         else:
             self.DEBOUNCE_COUNT = 0
-            if channel = self.CLK:  # CLK pin event
+            if channel == self.CLK:  # CLK pin event
                 # movement logic
                 if dt != clk:
                     direction = 1
