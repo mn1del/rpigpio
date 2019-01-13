@@ -45,10 +45,10 @@ if __name__ == "__main__":
         GPIO.output(stepper.DIR, direction)
         for x in range(stepper.SPR):
             GPIO.output(stepper.STEP, GPIO.HIGH)
-            sleep(0.0208)
+            time.sleep(0.0208)
             GPIO.output(stepper.STEP, GPIO.LOW)
-            sleep(0.0208)
-        sleep(0.5)    
+            time.sleep(0.0208)
+        time.sleep(0.5)    
     GPIO.cleanup()    
 
 
