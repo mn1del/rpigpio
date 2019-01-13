@@ -6,6 +6,7 @@ Classes handling GPIO interactions using RPi.GPIO library
 """
 
 
+import rpigpio.base
 from rpigpio.hx711 import HX711
 from rpigpio.lcd1602 import LCD1602
 from rpigpio.rotaryencoder import RotaryEncoder
