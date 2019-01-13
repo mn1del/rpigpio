@@ -8,7 +8,7 @@ Class to handle rotary encoder inputs
 import RPi.GPIO as GPIO
 import time
 
-from base import BaseIO
+from rpigpio.base import BaseIO
 
 class RotaryEncoder(BaseIO):
     def __init__(self, clk=22, dt=27, button=17, counter=0, long_press_secs=1.0, debounce_n=2):

@@ -4,7 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 
-from base import BaseIO
+from rpigpio.base import BaseIO
 
 class Display4s7s(BaseIO):
     def __init__(

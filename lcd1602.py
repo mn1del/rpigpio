@@ -12,7 +12,7 @@ Based on code written by:
 import RPi.GPIO as GPIO
 import time
 
-from base import BaseIO
+from rpigpio.base import BaseIO
 
 class LCD1602(BaseIO):
     def __init__(self, data_pins=[23,24,25,8], rs_pin=14, e_pin=15):
