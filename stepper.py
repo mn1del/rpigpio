@@ -42,11 +42,11 @@ class Stepper(BaseIO):
 if __name__ == "__main__":
     stepper = Stepper()
     for direction in [0,1]:
-        GPIO.output(self.DIR, direction)
-        for x in range(self.SPR):
-            GPIO.output(self.STEP, GPIO.HIGH)
+        GPIO.output(stepper.DIR, direction)
+        for x in range(stepper.SPR):
+            GPIO.output(stepper.STEP, GPIO.HIGH)
             sleep(0.0208)
-            GPIO.output(self.STEP, GPIO.LOW)
+            GPIO.output(stepper.STEP, GPIO.LOW)
             sleep(0.0208)
         sleep(0.5)    
     GPIO.cleanup()    
