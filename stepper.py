@@ -4,7 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 
-from rpigpio.base import BaseIO
+from base import BaseIO
 
 
 class Stepper(BaseIO):
