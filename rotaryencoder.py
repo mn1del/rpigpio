@@ -97,7 +97,6 @@ class RotaryEncoder(BaseIO):
         time_1 = time_0
         while (GPIO.input(channel) == 0) \
                 & ((time_1-time_0) < self.LONG_PRESS_SECS):
-            print("button held down...")
             time_1 = time.time()
         self.BUTTON_LAST_PRESS = time_1
         if (time_1 - time_0) > self.LONG_PRESS_SECS:
