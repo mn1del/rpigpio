@@ -79,13 +79,15 @@ class HX711(BaseIO):
             self.EXTRA_PULSES = 1
         print("Pulses: {}".format(self.EXTRA_PULSES))
 
-    def get_reading(self, n_obs=1):
+    def get_reading(self, n_obs=5, clip=True):
         """
         Return a single reading (or average of n_obs readings)
 
         args:
             n_obs: (int) number of reading to average over)
+            clip: (bool) if True, removes the highest and lowest values
         """
+        assert (n_obs - (2*clip) >= 1)
         vals = []
         while len(vals) < n_obs:
             if (not self.data_ready) & GPIO.input(self.DATA)==0:#(GPIO.event_detected(self.DATA)):
@@ -104,7 +106,7 @@ class HX711(BaseIO):
                     GPIO.output(self.CLOCK, GPIO.HIGH)
                     GPIO.output(self.CLOCK, GPIO.LOW)
                 self._reset_state()
-        reading = sum(vals) / n_obs
+        reading = (sum(vals)-max(vals)-min(vals)) / (n_obs(2*clip))
         if self.PRINTOUT:    
             print("Avg over {} observation(s): {}".format(n_obs, reading))
         return reading
