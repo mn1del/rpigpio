@@ -41,7 +41,7 @@ class Stepper(BaseIO):
         
         # setup pins
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup([self.DIR, self.STEP], GPIO.OUT)
+        GPIO.setup([self.DIR, self.STEP], GPIO.OUT, initial=GPIO.LOW)
         GPIO.setup([self.MS1, self.MS2, self.MS3], GPIO.OUT)
         
         # set up microstepping
