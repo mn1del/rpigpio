@@ -8,7 +8,7 @@ from base import BaseIO
 
 
 class Stepper(BaseIO):
-    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, spr=48):
+    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=96, microstep_mode=2):
         """
         Class handling manual interactions with a stepper motor
 
@@ -18,14 +18,18 @@ class Stepper(BaseIO):
             ms1_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
             ms2_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
             ms3_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
-            spr: (int) steps per revolution
+            steps_per_rev: (int) steps per revolution
+            microstep_mode: (int) microstepping denominator
+                            - e.g. "2" for "1/2", "8" for "1/8", or "1" for full step mode
         """
+        # define instance variables
         self.DIR = dir_pin
         self.STEP = step_pin
         self.MS1 = ms1_pin
         self.MS2 = ms2_pin
         self.MS3 = ms3_pin
-        self.SPR = spr
+        self.STEPS_PER_REV = steps_per_rev
+        self.MICROSTEP_MODE = microstep_mode
 
         # define microstep map
         self.microsteps = {
@@ -34,16 +38,32 @@ class Stepper(BaseIO):
                 4: (0,1,0),
                 8: (1,1,0),
                 16: (1,1,1)}
-
+        
+        # setup pins
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.DIR, self.STEP], GPIO.OUT)
         GPIO.setup([self.MS1, self.MS2, self.MS3], GPIO.OUT)
+        
+        # set up microstepping
+        self.set_microsteps(self.MICROSTEP_MODE)
+        
+    def set_microsteps(self, mode):
+        """
+        Set the microstepping mode via software (MS1, MS2, MS3 pins)
+        
+        args:
+            mode: microstepping denominator. Must be in self.microsteps keys
+        """
+        assert mode in self.microsteps.keys()
+        GPIO.output(self.MS1, self.microsteps[mode][0])
+        GPIO.output(self.MS2, self.microsteps[mode][1])
+        GPIO.output(self.MS3, self.microsteps[mode][2])
 
 if __name__ == "__main__":
     stepper = Stepper()
     for direction in [0,1]:
         GPIO.output(stepper.DIR, direction)
-        for x in range(stepper.SPR):
+        for x in range(stepper.STEPS_PER_REV):
             GPIO.output(stepper.STEP, GPIO.HIGH)
             time.sleep(0.0208)
             GPIO.output(stepper.STEP, GPIO.LOW)
