@@ -65,9 +65,9 @@ if __name__ == "__main__":
         GPIO.output(stepper.DIR, direction)
         for x in range(stepper.STEPS_PER_REV):
             GPIO.output(stepper.STEP, GPIO.HIGH)
-            time.sleep(0.0208)
+            #time.sleep(1/200)
             GPIO.output(stepper.STEP, GPIO.LOW)
-            time.sleep(0.0208)
+            time.sleep(1/200)
         time.sleep(0.5)    
     GPIO.cleanup()    
 
