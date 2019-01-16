@@ -60,15 +60,17 @@ class Stepper(BaseIO):
         GPIO.output(self.MS3, self.microsteps[mode][2])
 
 if __name__ == "__main__":
-    stepper = Stepper()
+    fullsteps_per_rev = 200
+    step_mode = 2
+    stepper = Stepper(steps_per_rev=fullsteps_per_rev*step_mode, microstep_mode=step_mode)
     for direction in [0,1]:
         GPIO.output(stepper.DIR, direction)
         start = time.time()
         for x in range(stepper.STEPS_PER_REV):
             GPIO.output(stepper.STEP, GPIO.HIGH)
-            time.sleep(1/200)
+            time.sleep(1/(fullsteps_per_rev*step_mode))
             GPIO.output(stepper.STEP, GPIO.LOW)
-            time.sleep(1/200)
+            time.sleep(1/(fullsteps_per_rev*step_mode))
         print("Direction: {} time: {}s".format(direction, time.time() - start))    
         time.sleep(0.5)    
     GPIO.cleanup()    
