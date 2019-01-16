@@ -8,7 +8,7 @@ from base import BaseIO
 
 
 class Stepper(BaseIO):
-    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=96, microstep_mode=2):
+    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=200, microstep_mode=1):
         """
         Class handling manual interactions with a stepper motor
 
