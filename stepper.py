@@ -63,11 +63,13 @@ if __name__ == "__main__":
     stepper = Stepper()
     for direction in [0,1]:
         GPIO.output(stepper.DIR, direction)
+        start = time.time()
         for x in range(stepper.STEPS_PER_REV):
             GPIO.output(stepper.STEP, GPIO.HIGH)
             time.sleep(1/200)
             GPIO.output(stepper.STEP, GPIO.LOW)
             time.sleep(1/200)
+        print("Direction: {} time: {}s".format(direction, time.time() - start))    
         time.sleep(0.5)    
     GPIO.cleanup()    
 
