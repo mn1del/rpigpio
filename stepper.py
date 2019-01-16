@@ -68,9 +68,9 @@ if __name__ == "__main__":
         start = time.time()
         for x in range(stepper.STEPS_PER_REV):
             GPIO.output(stepper.STEP, GPIO.HIGH)
-            time.sleep(0.5/(fullsteps_per_rev*step_mode**2))
+            time.sleep(1/(fullsteps_per_rev*step_mode**2))
             GPIO.output(stepper.STEP, GPIO.LOW)
-            time.sleep(0.5/(fullsteps_per_rev*step_mode**2))
+            time.sleep(1/(fullsteps_per_rev*step_mode**2))
         print("Direction: {} time: {}s".format(direction, time.time() - start))    
         time.sleep(0.5)    
     GPIO.cleanup()    
