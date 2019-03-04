@@ -10,3 +10,4 @@ from rpigpio.hx711 import HX711
 from rpigpio.lcd1602 import LCD1602
 from rpigpio.rotaryencoder import RotaryEncoder
 from rpigpio.fourdigitdisplay import Display4s7s
+from rpigpio.toggle import Toggle
