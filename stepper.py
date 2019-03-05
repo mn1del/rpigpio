@@ -58,6 +58,24 @@ class Stepper(BaseIO):
         GPIO.output(self.MS1, self.microsteps[mode][0])
         GPIO.output(self.MS2, self.microsteps[mode][1])
         GPIO.output(self.MS3, self.microsteps[mode][2])
+        
+    def step(self, n_steps=1, inter_step_pause=0.005, direction=1, high_pause=0.005):
+        """
+        Effect a single step by toggling STEP pin high, 
+        and then low (with a high_pause in between)
+        
+        args:
+            n_steps: 
+            inter_step_pause: time in seconds to pause between steps
+            direction: (int) 1|0 signifying the direction of the step.
+            high_pause: time in seconds to pause between high and low STEP outputs
+        """
+        GPIO.output(stepper.DIR, direction)
+        for i in range(n_steps):
+            GPIO.output(self.STEP, GPIO.HIGH)
+            time.sleep(high_pause)
+            GPIO.output(self.STEP, GPIO.LOW)
+            time.sleep(inter_step_pause)
 
 if __name__ == "__main__":
     fullsteps_per_rev = 200
