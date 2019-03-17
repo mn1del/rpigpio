@@ -11,12 +11,14 @@ import time
 from rpigpio.base import BaseIO
 
 class Button(BaseIO):
-    def __init__(self, toggle_pin=4):
+    def __init__(self, button_pin=4, pull_down=False, debounce_delay_secs=0.05):
         """
         Class to handle momentary switch input
         
         args:
             button_pin: (int) GPIO pin (BCM)
+            pull_down: (bool) if True set pull_up_down to GPIO.PUD_DOWN
+            debounce_delay_secs: (float) seconds delay to handle debouncing 
         """
         GPIO.setmode(GPIO.BCM)
         
