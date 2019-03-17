@@ -11,7 +11,7 @@ import time
 from rpigpio.base import BaseIO
 
 class Toggle(BaseIO):
-    def __init__(self, toggle_pin=4, toggle_on_func=None, toggle_off_func=None, debounce_delay_secs=0.05):
+    def __init__(self, toggle_pin=4, debounce_delay_secs=0.05):
         """
         Class to handle toggle switch input
         
