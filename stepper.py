@@ -8,7 +8,7 @@ from base import BaseIO
 
 
 class Stepper(BaseIO):
-    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=200, microstep_mode=1):
+    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=200, microstep_mode=1, driver="drv8825"):
         """
         Class handling manual interactions with a stepper motor
 
@@ -21,6 +21,7 @@ class Stepper(BaseIO):
             steps_per_rev: (int) steps per revolution
             microstep_mode: (int) microstepping denominator
                             - e.g. "2" for "1/2", "8" for "1/8", or "1" for full step mode
+            driver: (str) e.g "drv8825"                
         """
         # define instance variables
         self.DIR = dir_pin
@@ -30,14 +31,24 @@ class Stepper(BaseIO):
         self.MS3 = ms3_pin
         self.STEPS_PER_REV = steps_per_rev
         self.MICROSTEP_MODE = microstep_mode
+        self.DRIVER = driver.lower()
 
         # define microstep map
-        self.microsteps = {
-                1: (0,0,0),
-                2: (1,0,0),
-                4: (0,1,0),
-                8: (1,1,0),
-                16: (1,1,1)}
+        if self.DRIVER == "a4988":
+            self.microsteps = {
+                    1: (0,0,0),
+                    2: (1,0,0),
+                    4: (0,1,0),
+                    8: (1,1,0),
+                    16: (1,1,1)}
+        elif self.DRIVER == "drv8825":    
+            self.microsteps = {
+                    1: (0,0,0),
+                    2: (1,0,0),
+                    4: (0,1,0),
+                    8: (1,1,0),
+                    16: (0,0,1),
+                    32: (1,0,1)}
         
         # setup pins
         GPIO.setmode(GPIO.BCM)
