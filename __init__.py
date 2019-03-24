@@ -12,3 +12,4 @@ from rpigpio.rotaryencoder import RotaryEncoder
 from rpigpio.fourdigitdisplay import Display4s7s
 from rpigpio.toggle import Toggle
 from rpigpio.button import Button
+from rpigpio.stepper import Stepper
