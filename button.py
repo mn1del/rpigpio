@@ -28,7 +28,6 @@ class Button(BaseIO):
         # set class variables
         self.BUTTON = button_pin
         self.DEBOUNCE_MS = debounce_delay_secs * 1000  # convert to milliseconds
-        self.CALLBACK_FUNC = callback_func
         
         # setup pins
         if pull_up:
