@@ -8,7 +8,16 @@ from base import BaseIO
 
 
 class Stepper(BaseIO):
-    def __init__(self, dir_pin=19, step_pin=26, ms1_pin=21, ms2_pin=20, ms3_pin=16, steps_per_rev=200, microstep_mode=1, driver="drv8825"):
+    def __init__(
+            self,
+            dir_pin=19,
+            step_pin=26,
+            ms1_pin=21,
+            ms2_pin=20,
+            ms3_pin=16,
+            steps_per_rev=200,
+            microstep_mode=1,
+            driver="drv8825"):
         """
         Class handling manual interactions with a stepper motor
 
@@ -91,15 +100,21 @@ class Stepper(BaseIO):
 if __name__ == "__main__":
     fullsteps_per_rev = 200
     step_mode = 2
+    step_pause = 1/(fullsteps_per_rev*step_mode**2)
     stepper = Stepper(steps_per_rev=fullsteps_per_rev*step_mode, microstep_mode=step_mode)
     for direction in [0,1]:
-        GPIO.output(stepper.DIR, direction)
+        #GPIO.output(stepper.DIR, direction)
         start = time.time()
-        for x in range(stepper.STEPS_PER_REV):
-            GPIO.output(stepper.STEP, GPIO.HIGH)
-            time.sleep(1/(fullsteps_per_rev*step_mode**2))
-            GPIO.output(stepper.STEP, GPIO.LOW)
-            time.sleep(1/(fullsteps_per_rev*step_mode**2))
+        stepper.step(
+                n_steps=stepper.STEPS_PER_REV,
+                inter_step_pause=step_pause,
+                direction=direction,
+                high_pause=step_pause)
+#        for x in range(stepper.STEPS_PER_REV):
+#            GPIO.output(stepper.STEP, GPIO.HIGH)
+#            time.sleep(1/(fullsteps_per_rev*step_mode**2))
+#            GPIO.output(stepper.STEP, GPIO.LOW)
+#            time.sleep(1/(fullsteps_per_rev*step_mode**2))
         print("Direction: {} time: {}s".format(direction, time.time() - start))    
         time.sleep(0.5)    
     GPIO.cleanup()    

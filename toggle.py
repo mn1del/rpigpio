@@ -25,6 +25,7 @@ class Toggle(BaseIO):
         
         # define pin locations (BCM)
         self.TOGGLE = toggle_pin
+        GPIO.setup(self.TOGGLE, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
         # setup callbacks
         self.DEBOUNCE_DELAY_SECS = debounce_delay_secs
