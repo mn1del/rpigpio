@@ -111,18 +111,12 @@ if __name__ == "__main__":
             microstep_mode=step_mode,
             driver="drv8825")
     for direction in [0,1]:
-        #GPIO.output(stepper.DIR, direction)
         start = time.time()
         stepper.step(
                 n_steps=stepper.STEPS_PER_REV,
                 inter_step_pause=step_pause,
                 direction=direction,
                 high_pause=step_pause)
-#        for x in range(stepper.STEPS_PER_REV):
-#            GPIO.output(stepper.STEP, GPIO.HIGH)
-#            time.sleep(1/(fullsteps_per_rev*step_mode**2))
-#            GPIO.output(stepper.STEP, GPIO.LOW)
-#            time.sleep(1/(fullsteps_per_rev*step_mode**2))
         print("Direction: {} time: {}s".format(direction, time.time() - start))    
         time.sleep(0.5)    
     GPIO.cleanup()    
