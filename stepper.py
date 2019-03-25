@@ -4,7 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 
-from rpigpio.base import BaseIO
+from base import BaseIO
 
 
 class Stepper(BaseIO):
@@ -101,7 +101,15 @@ if __name__ == "__main__":
     fullsteps_per_rev = 200
     step_mode = 2
     step_pause = 1/(fullsteps_per_rev*step_mode**2)
-    stepper = Stepper(steps_per_rev=fullsteps_per_rev*step_mode, microstep_mode=step_mode)
+    stepper = Stepper(
+            dir_pin=8,
+            step_pin=7,
+            ms1_pin=21,
+            ms2_pin=20,
+            ms3_pin=16,
+            steps_per_rev=fullsteps_per_rev*step_mode,
+            microstep_mode=step_mode,
+            driver="drv8825")
     for direction in [0,1]:
         #GPIO.output(stepper.DIR, direction)
         start = time.time()

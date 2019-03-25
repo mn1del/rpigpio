@@ -178,6 +178,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         GPIO.cleanup()
     finally:
-        #lcd.clear_display()
-        #lcd.lcd_string("Goodbye!", lcd.LCD_LINE_1)
         GPIO.cleanup()
