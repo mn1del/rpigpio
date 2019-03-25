@@ -8,7 +8,7 @@ Class to handle toggle switch inputs
 import RPi.GPIO as GPIO
 import time
 
-from rpigpio.base import BaseIO
+from base import BaseIO
 
 class Toggle(BaseIO):
     def __init__(self, toggle_pin=4, debounce_delay_secs=0.05):
