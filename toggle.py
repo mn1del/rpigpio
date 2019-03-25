@@ -61,7 +61,7 @@ if __name__ == "__main__":
                 debounce_delay_secs=0.05)
         state = toggle.get_state()
         start = time.time()
-        while time.time() > start + 20:
+        while (time.time() - start) < 20:
             new_state = toggle.get_state()
             if new_state != state:
                 state = new_state
