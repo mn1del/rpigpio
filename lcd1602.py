@@ -171,7 +171,7 @@ class LCD1602(BaseIO):
             
 if __name__ == '__main__':
     try:
-        lcd = LCD1602()
+        lcd = LCD1602(data_pins=[6,13,19,26], rs_pin=11, e_pin=5)
         lcd.lcd_string("Hello Line 1!!", lcd.LCD_LINE_1)
         lcd.lcd_string("...and Line 2!!!", lcd.LCD_LINE_2)
         time.sleep(5)
