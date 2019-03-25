@@ -124,7 +124,7 @@ class HX711(BaseIO):
 
 if __name__ == "__main__":
     try:
-        hx = HX711(data=11, clock=9, gain=128, printout=True)
+        hx = HX711(data=3, clock=2, gain=128, printout=True)
         hx.start_monitoring(n_obs=3)
     except KeyboardInterrupt:
         pass
