@@ -53,5 +53,22 @@ class Toggle(BaseIO):
             self.STATE = state
         
         return self.STATE
-                
-  
+
+if __name__ == "__main__":
+    try:
+        toggle = Toggle(
+                toggle_pin=12,
+                debounce_delay_secs=0.05)
+        state = toggle.get_state()
+        start = time.time()
+        while time.time() > start + 20:
+            new_state = toggle.get_state()
+            if new_state != state:
+                state = new_state
+                print("Toggle state: {}".format(state))
+    except KeyboardInterrupt:
+        pass
+    finally:
+        GPIO.cleanup()
+                    
+      
