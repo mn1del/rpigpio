@@ -107,7 +107,7 @@ class RotaryEncoder(BaseIO):
 
 if __name__ == "__main__":
     try:
-        rot = RotaryEncoder()
+        rot = RotaryEncoder(clk=18, dt=15, button=14, counter=0, long_press_secs=1.0, debounce_n=2)
         counter = rot.COUNTER
         button = rot.BUTTON_LAST_PRESS
         print("{}, {}".format(counter, button))
