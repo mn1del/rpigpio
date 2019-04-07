@@ -95,7 +95,6 @@ class Stepper(BaseIO):
         """
         if GPIO.input(self.SLEEP) == GPIO.LOW:
             self.wake()
-            time.sleep(0.005)
         GPIO.output(stepper.DIR, direction)
         for i in range(n_steps):
             GPIO.output(self.STEP, GPIO.HIGH)
@@ -114,6 +113,7 @@ class Stepper(BaseIO):
         Activate DRV8825 by setting slef.SLEEP pin to logic HIGH
         """
         GPIO.output(self.SLEEP, GPIO.HIGH)
+        time.sleep(0.01)
 
 if __name__ == "__main__":
     try:
