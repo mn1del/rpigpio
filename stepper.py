@@ -13,9 +13,9 @@ class Stepper(BaseIO):
             dir_pin=8,
             step_pin=7,
             sleep_pin=25,
-            ms1_pin=21,
-            ms2_pin=20,
-            ms3_pin=16,
+            ms0_pin=21,
+            ms1_pin=20,
+            ms2_pin=16,
             steps_per_rev=200,
             microstep_mode=1,
             driver="drv8825"):
@@ -26,9 +26,9 @@ class Stepper(BaseIO):
             dir_pin: (int). BCM. DIR pin sets direction when a step pulse occurs
             step_pin: (int). BCM. Controls each step of movement
             sleep_pin: (int). Logic high to turn the driver on
-            ms1_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
-            ms2_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
-            ms3_pin(int). BCM. MS1, MS2, MS3 establish microstepping mode
+            ms0_pin(int). BCM. MS0, MS1, MS2 establish microstepping mode
+            ms1_pin(int). BCM. MS0, MS1, MS2 establish microstepping mode
+            ms2_pin(int). BCM. MS0, MS1, MS2 establish microstepping mode
             steps_per_rev: (int) steps per revolution
             microstep_mode: (int) microstepping denominator
                             - e.g. "2" for "1/2", "8" for "1/8", or "1" for full step mode
@@ -38,14 +38,15 @@ class Stepper(BaseIO):
         self.DIR = dir_pin
         self.STEP = step_pin
         self.SLEEP = sleep_pin
+        self.MS0 = ms0_pin
         self.MS1 = ms1_pin
         self.MS2 = ms2_pin
-        self.MS3 = ms3_pin
         self.STEPS_PER_REV = steps_per_rev
         self.MICROSTEP_MODE = microstep_mode
         self.DRIVER = driver.lower()
 
         # define microstep map
+        # ***NOTE THAT THESE ARE ORDERED MS2,MS1,MS0 AS PER DRV8825 DATASHEET***
         if self.DRIVER == "a4988":
             self.microsteps = {
                     1: (0,0,0),
@@ -65,22 +66,22 @@ class Stepper(BaseIO):
         # setup pins
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.DIR, self.STEP, self.SLEEP], GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup([self.MS1, self.MS2, self.MS3], GPIO.OUT)
+        GPIO.setup([self.MS0, self.MS1, self.MS2], GPIO.OUT)
         
         # set up microstepping
         self.set_microsteps(self.MICROSTEP_MODE)
         
     def set_microsteps(self, mode):
         """
-        Set the microstepping mode via software (MS1, MS2, MS3 pins)
+        Set the microstepping mode via software (MS0, MS1, MS2 pins)
         
         args:
             mode: microstepping denominator. Must be in self.microsteps keys
         """
         assert mode in self.microsteps.keys()
-        GPIO.output(self.MS1, self.microsteps[mode][0])
-        GPIO.output(self.MS2, self.microsteps[mode][1])
-        GPIO.output(self.MS3, self.microsteps[mode][2])
+        GPIO.output(self.MS0, self.microsteps[mode][2])
+        GPIO.output(self.MS1, self.microsteps[mode][1])
+        GPIO.output(self.MS2, self.microsteps[mode][0])
         
     def step(self, n_steps=1, inter_step_pause=0.005, direction=1, high_pause=0.005):
         """
@@ -125,9 +126,9 @@ if __name__ == "__main__":
                 dir_pin=8,
                 step_pin=7,
                 sleep_pin=25,
-                ms1_pin=21,
-                ms2_pin=20,
-                ms3_pin=16,
+                ms0_pin=21,
+                ms1_pin=20,
+                ms2_pin=16,
                 steps_per_rev=fullsteps_per_rev*step_mode,
                 microstep_mode=step_mode,
                 driver="drv8825")
