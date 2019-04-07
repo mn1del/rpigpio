@@ -138,10 +138,10 @@ if __name__ == "__main__":
             print("Direction: {} time: {}s".format(direction, time.time() - start))    
             time.sleep(0.5)    
     except:
-        self.sleep()
+        stepper.sleep()
         pass
     finally:
-        self.sleep()
+        stepper.sleep()
         GPIO.cleanup()    
     
     
