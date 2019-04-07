@@ -102,6 +102,7 @@ class Stepper(BaseIO):
             time.sleep(high_pause)
             GPIO.output(self.STEP, GPIO.LOW)
             time.sleep(inter_step_pause)
+            print(GPIO.input(self.SLEEP))
 
     def sleep(self):
         """
