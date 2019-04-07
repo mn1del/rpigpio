@@ -143,7 +143,6 @@ if __name__ == "__main__":
             print("Direction: {} time: {}s".format(direction, time.time() - start))    
             time.sleep(0.5)    
     except:
-        stepper.sleep()
         pass
     finally:
         stepper.sleep()
