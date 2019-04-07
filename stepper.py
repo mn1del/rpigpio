@@ -46,7 +46,7 @@ class Stepper(BaseIO):
         self.DRIVER = driver.lower()
 
         # define microstep map
-        # THESE ARE ORDERED MS2,MS1,MS0 AS PER DRV8825 DATASHEET***
+        # THESE ARE ORDERED MS2,MS1,MS0 AS PER DRV8825 DATASHEET***t pull
         if self.DRIVER == "a4988":
             self.microsteps = {
                     1: (0,0,0),
