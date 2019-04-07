@@ -94,6 +94,7 @@ class Stepper(BaseIO):
             high_pause: time in seconds to pause between high and low STEP outputs
         """
         if GPIO.input(self.SLEEP) == GPIO.LOW:
+            print("waking up")
             self.wake()
         GPIO.output(stepper.DIR, direction)
         for i in range(n_steps):
