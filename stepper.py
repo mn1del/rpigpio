@@ -56,16 +56,15 @@ class Stepper(BaseIO):
         elif self.DRIVER == "drv8825":    
             self.microsteps = {
                     1: (0,0,0),
-                    2: (1,0,0),
+                    2: (0,0,1),
                     4: (0,1,0),
-                    8: (1,1,0),
-                    16: (0,0,1),
+                    8: (0,1,1),
+                    16: (1,0,0),
                     32: (1,0,1)}
         
         # setup pins
         GPIO.setmode(GPIO.BCM)
         GPIO.setup([self.DIR, self.STEP, self.SLEEP], GPIO.OUT, initial=GPIO.LOW)
-        GPIO.setup(self.SLEEP, GPIO.OUT, initial=GPIO.HIGH)
         GPIO.setup([self.MS1, self.MS2, self.MS3], GPIO.OUT)
         
         # set up microstepping
@@ -95,7 +94,7 @@ class Stepper(BaseIO):
             high_pause: time in seconds to pause between high and low STEP outputs
         """
         if GPIO.input(self.SLEEP) == GPIO.LOW:
-            print("waking up")
+            print("wake DRV8825")
             self.wake()
         GPIO.output(stepper.DIR, direction)
         for i in range(n_steps):
@@ -103,7 +102,6 @@ class Stepper(BaseIO):
             time.sleep(high_pause)
             GPIO.output(self.STEP, GPIO.LOW)
             time.sleep(inter_step_pause)
-        print(GPIO.input(self.SLEEP))    
 
     def sleep(self):
         """
@@ -116,7 +114,7 @@ class Stepper(BaseIO):
         Activate DRV8825 by setting slef.SLEEP pin to logic HIGH
         """
         GPIO.output(self.SLEEP, GPIO.HIGH)
-        time.sleep(0.01)
+        time.sleep(0.005)
 
 if __name__ == "__main__":
     try:
