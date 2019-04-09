@@ -112,6 +112,7 @@ class Stepper(BaseIO):
         Turn the DRV8825 to sleep by setting self.SLEEP pin to logic low
         """
         GPIO.output(self.SLEEP, GPIO.LOW)
+        print("Stepper asleep")
 
     def wake(self):
         """
@@ -119,6 +120,7 @@ class Stepper(BaseIO):
         """
         GPIO.output(self.SLEEP, GPIO.HIGH)
         time.sleep(0.005)
+        print("Stepper awake!")
 
 if __name__ == "__main__":
     try:
