@@ -50,9 +50,13 @@ class Button(BaseIO):
         """
         time.sleep(self.DEBOUNCE_MS/1000)
         self.STATE = GPIO.input(self.BUTTON)
-        print("STATE CHANGE, new state = {}".format(self.STATE))
  
 if __name__ == "__main__":
+    """
+    With a normally closed switch wired from GND to PIN, and pullup resister 
+    the STATE==1 when the switch is pressed (because the circuit is broken and the resister
+    pulls the PIN high)
+    """
     try:
         button = Button(button_pin=12, pull_up=True)
         while True:
