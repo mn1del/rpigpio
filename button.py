@@ -12,7 +12,7 @@ from rpigpio.base import BaseIO
 
 class Button(BaseIO):
     def __init__(self, 
-                 button_pin=4, 
+                 button_pin=12, 
                  pull_up=True, 
                  debounce_delay_secs=0.05):
         """
@@ -51,4 +51,13 @@ class Button(BaseIO):
         time.sleep(self.DEBOUNCE_MS/1000)
         self.STATE = GPIO.input(self.BUTTON)
  
-            
+if __name__ == "__main__":
+    try:
+        button = Button(button_pin=12, pull_up=True)
+        while True:
+            print("State: {}".format(button.STATE))
+            time.sleep(0.01)
+    except:
+        pass
+    finally:
+        GPIO.cleanup()
