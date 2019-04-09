@@ -50,6 +50,7 @@ class Button(BaseIO):
         """
         time.sleep(self.DEBOUNCE_MS/1000)
         self.STATE = GPIO.input(self.BUTTON)
+        print("STATE CHANGE, new state = {}".format(self.STATE))
  
 if __name__ == "__main__":
     try:
