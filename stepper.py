@@ -100,7 +100,7 @@ class Stepper(BaseIO):
         if GPIO.input(self.SLEEP) == GPIO.LOW:
             print("wake DRV8825")
             self.wake()
-        GPIO.output(stepper.DIR, direction)
+        GPIO.output(self.DIR, direction)
         for i in range(n_steps):
             GPIO.output(self.STEP, GPIO.HIGH)
             time.sleep(high_pause)
