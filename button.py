@@ -16,7 +16,9 @@ class Button(BaseIO):
                  pull_up=True, 
                  debounce_delay_secs=0.05):
         """
-        Class to handle momentary switch input
+        Class to handle momentary switch input.
+        Note that STATE behaviour will depend on whether a pullup or pull-down resistor is used,
+        and whether the circuit is wired normally open or normally closed.
         
         args:
             button_pin: (int) GPIO pin (BCM)
@@ -32,20 +34,21 @@ class Button(BaseIO):
         # setup pins
         if pull_up:
             GPIO.setup(self.BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-            self.STATE = True
         else:
             GPIO.setup(self.BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-            self.STATE = False
+        time.sleep(self.DEBOUNCE_MS/1000)
+        self.STATE = GPIO.input(self.BUTTON)    
             
         # setup event detection
         GPIO.add_event_detect(self.BUTTON, GPIO.BOTH, callback=self.set_state, bouncetime=self.DEBOUNCE_MS)
 
     def set_state(self, channel):
         """
-        Sets and returns state using GPIO.event_detected() logic
+        Sets and returns state using GPIO.event_detected() logic.
+        Note that STATE behaviour will depend on whether a pullup or pull-down resistor is used,
+        and whether the circuit is wired normally open or normally closed.
         """
         time.sleep(self.DEBOUNCE_MS/1000)
-        state = GPIO.input(self.BUTTON)
-        if state != self.STATE:
-            self.STATE = state   
+        self.STATE = GPIO.input(self.BUTTON)
+ 
             
