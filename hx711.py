@@ -4,7 +4,6 @@
 import RPi.GPIO as GPIO
 import time
 
-from base import BaseIO
 
 
 class HX711(BaseIO):
@@ -123,6 +122,7 @@ class HX711(BaseIO):
             self.get_reading(n_obs)
 
 if __name__ == "__main__":
+    from base import BaseIO
     try:
         hx = HX711(data=3, clock=2, gain=128, printout=True)
         hx.start_monitoring(n_obs=3)
@@ -130,3 +130,5 @@ if __name__ == "__main__":
         pass
     finally:
         GPIO.cleanup()
+else:
+    from rpigpio.base import BaseIO
