@@ -10,7 +10,7 @@ else:
     from rpigpio.base import BaseIO
 
 class HX711(BaseIO):
-    def __init__(self, data=2, clock=3, channel="A", gain=128, printout=True):
+    def __init__(self, data=27, clock=17, channel="A", gain=128, printout=True):
         """
         Bit bangs data from HX711 using RPi.GPIO library.
         The general logic for the HX711 is:
@@ -126,7 +126,7 @@ class HX711(BaseIO):
 
 if __name__ == "__main__":
     try:
-        hx = HX711(data=3, clock=2, gain=128, printout=True)
+        hx = HX711(data=27, clock=17, gain=128, printout=True)
         hx.start_monitoring(n_obs=3)
     except KeyboardInterrupt:
         pass
