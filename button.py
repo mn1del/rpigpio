@@ -8,7 +8,7 @@ Class to handle momentary switches
 import RPi.GPIO as GPIO
 import time
 
-from rpigpio.base import BaseIO
+from base import BaseIO
 
 class Button(BaseIO):
     def __init__(self, 
