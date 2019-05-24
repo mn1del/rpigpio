@@ -120,7 +120,7 @@ class Stepper(BaseIO):
             pauses.extend(list(reversed(pauses)))    
         return pauses                      
             
-    def step(self, n_steps=1, rpm=60, direction=1, use_ramp=False):
+    def step(self, n_steps=1, rpm=60, direction=1, use_ramp=True):
         """
         Effect steps by toggling STEP pin high, 
         and then low. Speed is controlled by rpm. Acceleration/deceleration
