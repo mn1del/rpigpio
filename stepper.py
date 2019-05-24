@@ -20,6 +20,8 @@ class Stepper(BaseIO):
             ms1_pin=20,
             ms2_pin=16,
             steps_per_rev=200,
+            acceleration=600,
+            starting_rpm=6,
             microstep_mode=1,
             driver="drv8825"):
         """
@@ -33,6 +35,8 @@ class Stepper(BaseIO):
             ms1_pin(int). BCM. MS0, MS1, MS2 establish microstepping mode
             ms2_pin(int). BCM. MS0, MS1, MS2 establish microstepping mode
             steps_per_rev: (int) steps per revolution
+            acceleration: (number) rpm per second
+            starting_rpm: (number) minimum rpm for ramping profile to start with
             microstep_mode: (int) microstepping denominator
                             - e.g. "2" for "1/2", "8" for "1/8", or "1" for full step mode
             driver: (str) e.g "drv8825"                
@@ -45,6 +49,8 @@ class Stepper(BaseIO):
         self.MS1 = ms1_pin
         self.MS2 = ms2_pin
         self.STEPS_PER_REV = steps_per_rev
+        self.ACCEL = acceleration
+        self.START_RPM = starting_rpm
         self.MICROSTEP_MODE = microstep_mode
         self.DRIVER = driver.lower()
 
@@ -86,26 +92,54 @@ class Stepper(BaseIO):
         GPIO.output(self.MS1, self.microsteps[mode][1])
         GPIO.output(self.MS2, self.microsteps[mode][0])
         
-    def step(self, n_steps=1, inter_step_pause=0.005, direction=1, high_pause=0.005):
+    def ramp(self, n_steps, target_rpm):
         """
-        Effect a single step by toggling STEP pin high, 
-        and then low (with a high_pause in between)
+        Calculates ramping steps and pauses for the input sequence. Returns a list of pauses.
+    
+        args:
+            n_steps: (int) total number of steps in the sequence, including ramp up/down steps.
+                     The maximum number of steps consumed by the ramping profile is n_steps/2.
+                     If actual rpm < target_rpm after n_steps/2, then target_rpm will not be reached.
+            target_rpm: (number) Max rpm. Once reached the ramp logic transistions to constant speed.
+        """  
+        target_pause_per_step = 1/(self.STEPS_PER_REV * target_rpm/60)
+        pauses = []  # list to be populated with the sequence of pauses
+        pause = 1/(self.STEPS_PER_REV * self.START_RPM / 60)  
+        elapsed = 0#pause
+        current_rpm = self.START_RPM
+        step_count = 0
+        # ramp
+        while (step_count < n_steps/2) & (current_rpm < target_rpm):
+            pauses.append(pause)
+            elapsed += pause
+            current_rpm = self.START_RPM + (elapsed * self.ACCEL)
+            pause = 1/(self.STEPS_PER_REV * current_rpm / 60)             
+            step_count += 1
+        pauses.extend([target_pause_per_step for i in range(n_steps - (2*step_count))])
+        pauses.extend(list(reversed(pauses)))    
+        return pauses                      
+            
+    def step(self, n_steps=1, rpm=60, direction=1, ramp=False):
+        """
+        Effect steps by toggling STEP pin high, 
+        and then low. Speed is controlled by rpm. Acceleration/deceleration
+        is controlled by ramp.
         
         args:
             n_steps: 
-            inter_step_pause: time in seconds to pause between steps
+            rpm: (float) revoluations per minute
             direction: (int) 1|0 signifying the direction of the step.
-            high_pause: time in seconds to pause between high and low STEP outputs
+            ramp: (bool) if True, applies ramp() accelaration/deceleartion
         """
+        step_pause = (rpm/60)/self.STEPS_PER_REV
         if GPIO.input(self.SLEEP) == GPIO.LOW:
             print("wake DRV8825")
             self.wake()
         GPIO.output(self.DIR, direction)
         for i in range(n_steps):
             GPIO.output(self.STEP, GPIO.HIGH)
-            time.sleep(high_pause)
             GPIO.output(self.STEP, GPIO.LOW)
-            time.sleep(inter_step_pause)
+            time.sleep(step_pause)
 
     def sleep(self):
         """
