@@ -116,10 +116,11 @@ class Stepper(BaseIO):
             pause = 1/(self.STEPS_PER_REV * current_rpm / 60)             
             step_count += 1
         pauses.extend([target_pause_per_step for i in range(n_steps - (2*step_count))])
-        pauses.extend(list(reversed(pauses)))    
+        if n_steps > 1:
+            pauses.extend(list(reversed(pauses)))    
         return pauses                      
             
-    def step(self, n_steps=1, rpm=60, direction=1, ramp=False):
+    def step(self, n_steps=1, rpm=60, direction=1, use_ramp=False):
         """
         Effect steps by toggling STEP pin high, 
         and then low. Speed is controlled by rpm. Acceleration/deceleration
@@ -129,14 +130,15 @@ class Stepper(BaseIO):
             n_steps: 
             rpm: (float) revoluations per minute
             direction: (int) 1|0 signifying the direction of the step.
-            ramp: (bool) if True, applies ramp() accelaration/deceleartion
+            use_ramp: (bool) if True, applies ramp() accelaration/deceleartion
         """
-        step_pause = (rpm/60)/self.STEPS_PER_REV
+        if use_ramp:
+            step_pauses = self.ramp(n_steps, rpm)
         if GPIO.input(self.SLEEP) == GPIO.LOW:
             print("wake DRV8825")
             self.wake()
         GPIO.output(self.DIR, direction)
-        for i in range(n_steps):
+        for step_pause in step_pauses:
             GPIO.output(self.STEP, GPIO.HIGH)
             GPIO.output(self.STEP, GPIO.LOW)
             time.sleep(step_pause)
