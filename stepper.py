@@ -176,10 +176,10 @@ if __name__ == "__main__":
         for direction in [0,1]:
             start = time.time()
             stepper.step(
-                    n_steps=stepper.STEPS_PER_REV,
-                    inter_step_pause=step_pause,
+                    n_steps=2*stepper.STEPS_PER_REV,
                     direction=direction,
-                    high_pause=step_pause)
+                    rpm=120,
+                    use_ramp=True)
             print("Direction: {} time: {}s".format(direction, time.time() - start))    
             time.sleep(0.5)    
     except:
