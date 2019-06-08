@@ -91,6 +91,7 @@ class Stepper(BaseIO):
         GPIO.output(self.MS0, self.microsteps[mode][2])
         GPIO.output(self.MS1, self.microsteps[mode][1])
         GPIO.output(self.MS2, self.microsteps[mode][0])
+        self.MICROSTEP_MODE = mode
         
     def ramp(self, n_steps, target_rpm):
         """
