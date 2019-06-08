@@ -138,7 +138,6 @@ class Stepper(BaseIO):
             print("wake DRV8825")
             self.wake()
         GPIO.output(self.DIR, direction)
-        print("n_pauses: {}".format(len(step_pauses)))
         for step_pause in step_pauses:
             GPIO.output(self.STEP, GPIO.HIGH)
             GPIO.output(self.STEP, GPIO.LOW)
