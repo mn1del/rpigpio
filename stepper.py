@@ -115,7 +115,7 @@ class Stepper(BaseIO):
             current_rpm = self.START_RPM + (elapsed * self.ACCEL)
             pause = 1/(self.STEPS_PER_REV * current_rpm / 60)             
             step_count += 1
-        pauses.extend([target_pause_per_step for i in range(n_steps - (2*step_count))])
+        pauses.extend([target_pause_per_step for i in range(int(n_steps/2) - step_count)])
         if n_steps > 1:
             pauses.extend(list(reversed(pauses)))    
         return pauses                      
