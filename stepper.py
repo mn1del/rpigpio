@@ -121,7 +121,7 @@ class Stepper(BaseIO):
             pauses.extend(list(reversed(pauses)))    
         return pauses                      
             
-    def step(self, n_steps=1, direction=1, rpm=60, use_ramp=True):
+    def step(self, n_steps=1, direction=1, rpm=60, use_ramp=True, continue_func=lambda: True):
         """
         Effect steps by toggling STEP pin high, 
         and then low. Speed is controlled by rpm. Acceleration/deceleration
@@ -132,6 +132,8 @@ class Stepper(BaseIO):
             direction: (int) 1|0 signifying the direction of the step.
             rpm: (float) revoluations per minute
             use_ramp: (bool) if True, applies ramp() accelaration/deceleartion
+            continue_func: (callable function returning boolean).
+                           If function returns True, continue. Else stop stepping
         """
         if use_ramp:
             step_pauses = self.ramp(n_steps, rpm)
@@ -140,9 +142,10 @@ class Stepper(BaseIO):
             self.wake()
         GPIO.output(self.DIR, direction)
         for step_pause in step_pauses:
-            GPIO.output(self.STEP, GPIO.HIGH)
-            GPIO.output(self.STEP, GPIO.LOW)
-            time.sleep(step_pause)
+            if continue_func:
+                GPIO.output(self.STEP, GPIO.HIGH)
+                GPIO.output(self.STEP, GPIO.LOW)
+                time.sleep(step_pause)
 
     def sleep(self):
         """
