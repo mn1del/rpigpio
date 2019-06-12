@@ -142,7 +142,7 @@ class Stepper(BaseIO):
             self.wake()
         GPIO.output(self.DIR, direction)
         for step_pause in step_pauses:
-            if continue_func:
+            if continue_func():
                 GPIO.output(self.STEP, GPIO.HIGH)
                 GPIO.output(self.STEP, GPIO.LOW)
                 time.sleep(step_pause)
