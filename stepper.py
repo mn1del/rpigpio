@@ -146,6 +146,9 @@ class Stepper(BaseIO):
                 GPIO.output(self.STEP, GPIO.HIGH)
                 GPIO.output(self.STEP, GPIO.LOW)
                 time.sleep(step_pause)
+            else:
+                print("Limit Triggered or target tension reached")
+                break
 
     def sleep(self):
         """
