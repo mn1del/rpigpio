@@ -135,6 +135,7 @@ class Stepper(BaseIO):
             continue_func: (callable function returning boolean).
                            If function returns True, continue. Else stop stepping
         """
+        timestamp = time.time()
         if use_ramp:
             step_pauses = self.ramp(n_steps, rpm)
         if GPIO.input(self.SLEEP) == GPIO.LOW:
@@ -143,9 +144,10 @@ class Stepper(BaseIO):
         GPIO.output(self.DIR, direction)
         for step_pause in step_pauses:
             if continue_func():
+                time.sleep(max(step_pause - (time.time()-timestamp), 0)
                 GPIO.output(self.STEP, GPIO.HIGH)
                 GPIO.output(self.STEP, GPIO.LOW)
-                time.sleep(step_pause)
+                timestamp = time.time()
             else:
                 print("Limit Triggered or target tension reached")
                 break
