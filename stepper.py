@@ -144,7 +144,7 @@ class Stepper(BaseIO):
         GPIO.output(self.DIR, direction)
         for step_pause in step_pauses:
             if continue_func():
-                time.sleep(max(step_pause - (time.time()-timestamp), 0)
+                time.sleep(max(step_pause - (time.time()-timestamp), 0))
                 GPIO.output(self.STEP, GPIO.HIGH)
                 GPIO.output(self.STEP, GPIO.LOW)
                 timestamp = time.time()
